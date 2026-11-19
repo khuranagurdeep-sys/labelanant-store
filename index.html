@@ -266,6 +266,39 @@ header.compact .hrow{padding-block:6px 0}
 .dotsw{display:inline-flex;gap:4px;margin-left:auto}
 .dotsw i{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.12)}
 .mobile-add{display:none}
+/* AI styled tags */
+.aitag{position:absolute;left:10px;bottom:10px;z-index:1;padding:3px 8px;background:rgba(255,255,255,.88);color:var(--soft);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;pointer-events:none;transition:opacity .4s}
+.media:hover .aitag{opacity:0}
+.ptag{position:absolute;left:12px;top:12px;z-index:2;padding:4px 10px;background:var(--gold);color:#fff;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.ptag.ai{background:rgba(255,255,255,.92);color:var(--soft)}
+/* fabric to finished look */
+.looks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,80px);align-items:center}
+.cmp{position:relative;width:100%;max-width:540px;justify-self:center;aspect-ratio:4/5;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:pan-y;background:var(--blush);box-shadow:0 26px 54px rgba(42,21,32,.16);--p:50%}
+.cmp::after{content:"";position:absolute;inset:12px;border:1px solid rgba(255,255,255,.8);pointer-events:none;z-index:3}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.cmp-b{position:absolute;inset:0;clip-path:inset(0 0 0 var(--p))}
+.cmp-h{position:absolute;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.25);pointer-events:none;z-index:4}
+.cmp-h i{position:absolute;top:50%;left:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;gap:8px}
+.cmp-h i::before,.cmp-h i::after{content:"";width:8px;height:8px;border-left:1.5px solid var(--rani);border-bottom:1.5px solid var(--rani);transform:rotate(45deg)}
+.cmp-h i::after{transform:rotate(-135deg)}
+.cmp-l,.cmp-r{position:absolute;bottom:22px;z-index:4;padding:5px 12px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;pointer-events:none}
+.cmp-l{left:22px;background:rgba(255,255,255,.94);color:var(--ink)}
+.cmp-r{right:22px;background:var(--rani);color:#fff}
+.cmp-r small{font-size:inherit}
+.cmp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;z-index:5}
+.cmp.hint{animation:hint 2.4s ease-in-out .4s 1}
+@keyframes hint{0%,100%{--p:50%}30%{--p:28%}65%{--p:72%}}
+@property --p{syntax:"<percentage>";inherits:true;initial-value:50%}
+.lk-copy h2{font-size:clamp(34px,3.8vw,54px);margin:10px 0 16px}
+.lk-copy h2 em{color:var(--rani)}
+.lk-copy p{color:var(--soft);font-size:16.5px;max-width:48ch;margin:0}
+.lk-copy .small{font-size:13px;margin-top:10px}
+.lk-name{font-family:"Bodoni Moda",Georgia,serif;font-size:24px;margin:26px 0 4px}
+.lk-name+.price{font-size:18px}
+.lk-pick{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 26px}
+.lk-pick button{width:62px;padding:0;border:0;background:none;cursor:pointer;outline:1px solid var(--line);outline-offset:3px;transition:outline-color .2s}
+.lk-pick button[aria-pressed=true]{outline:2px solid var(--rani)}
+.lk-pick img{width:100%;aspect-ratio:4/5;object-fit:cover}
 /* occasions */
 .occ{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
 .oc{position:relative;display:block;aspect-ratio:3/4.5;border:0;padding:0;cursor:pointer;overflow:hidden;isolation:isolate;text-align:center;color:var(--txt);background:radial-gradient(ellipse 75% 55% at 50% 72%,var(--b1),transparent 72%),var(--pat),var(--b2)}
@@ -511,8 +544,8 @@ html.js .rv.in{opacity:1;transform:none}
   .tabbar a,.tabbar button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:58px;border:0;background:none;font-size:11px;text-decoration:none;cursor:pointer;color:var(--ink)}
   .tabbar .count{top:5px;right:calc(50% - 20px)}.toast{bottom:78px}}
 @media (max-width:1100px){.occ{grid-template-columns:repeat(3,minmax(0,1fr))}.mosaic{grid-template-columns:1fr 1fr;grid-template-rows:420px 300px 300px}.tile.big{grid-row:auto;grid-column:span 2}.tile.wide{grid-column:span 2}.tile.big .tcopy{max-width:48%}}
-@media (max-width:900px){.hero{height:min(860px,calc(100svh - 120px));min-height:700px}.s-wrap{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:0;align-items:stretch}.s-art{order:-1;height:auto;min-height:0}.s-copy{text-align:center;padding:10px 0 86px}.s-copy .kicker{justify-content:center}.s-copy p{margin:14px auto 20px;font-size:16px}.s-copy .ctas{justify-content:center}.s-meta{justify-content:center;margin-top:18px}.frame,.lat,.swatch{display:none}.backdrop::after{background:linear-gradient(0deg,var(--b2) 18%,transparent 62%);opacity:.75}.mandala{width:min(100%,560px)}.sdot{padding:12px 4px}.sdot .th,.sdot .lb{display:none}.sdot b{position:relative;display:block;left:auto;right:auto;bottom:auto;width:34px}.snav .wrap{justify-content:center}.harrs{display:none}.story .wrap{grid-template-columns:1fr}.story-art{order:2;height:440px}.story-copy{padding-bottom:0;text-align:center}.story-copy p{margin-inline:auto}.sig{justify-content:center}}
-@media (max-width:600px){header.compact .logo{height:44px}.occ{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.ot{top:18px}.acts .btn{flex:1 1 120px}.colours{max-width:none}.fwa,.totop{display:none}.colours{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:6px 16px 4px;gap:14px}.cl{flex:none;width:84px;font-size:13px}.cimg{width:72px;height:72px}.ptrust div{font-size:12px}.zhint{display:none}.hero{min-height:0;height:clamp(600px,calc(100svh - 218px),720px)}.snav::before{height:90px}.s-copy h2{font-size:clamp(36px,10.4vw,46px)}.s-copy p{font-size:15.5px;margin:12px auto 18px}.s-copy .btn-ghost,.s-meta{display:none}.s-copy .ctas .btn{flex:1 1 100%}.marquee{padding:11px 0}.mosaic{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:300px}.tile.big,.tile.wide{grid-column:auto}.tile.big{height:440px}.tcopy{left:22px;bottom:22px;max-width:52%}.tile.big .tcopy{top:28px}.tframe{display:none}.story-art{height:380px}}
+@media (max-width:900px){.looks{grid-template-columns:1fr}.lk-copy{text-align:center}.lk-copy p{margin-inline:auto}.lk-pick{justify-content:center}.hero{height:min(860px,calc(100svh - 120px));min-height:700px}.s-wrap{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:0;align-items:stretch}.s-art{order:-1;height:auto;min-height:0}.s-copy{text-align:center;padding:10px 0 86px}.s-copy .kicker{justify-content:center}.s-copy p{margin:14px auto 20px;font-size:16px}.s-copy .ctas{justify-content:center}.s-meta{justify-content:center;margin-top:18px}.frame,.lat,.swatch{display:none}.backdrop::after{background:linear-gradient(0deg,var(--b2) 18%,transparent 62%);opacity:.75}.mandala{width:min(100%,560px)}.sdot{padding:12px 4px}.sdot .th,.sdot .lb{display:none}.sdot b{position:relative;display:block;left:auto;right:auto;bottom:auto;width:34px}.snav .wrap{justify-content:center}.harrs{display:none}.story .wrap{grid-template-columns:1fr}.story-art{order:2;height:440px}.story-copy{padding-bottom:0;text-align:center}.story-copy p{margin-inline:auto}.sig{justify-content:center}}
+@media (max-width:600px){.cmp-l,.cmp-r{bottom:16px;font-size:10.5px;padding:4px 8px}.cmp-l{left:16px}.cmp-r{right:16px;text-align:right}.cmp-r small{display:block;font-size:inherit}header.compact .logo{height:44px}.occ{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.ot{top:18px}.acts .btn{flex:1 1 120px}.colours{max-width:none}.fwa,.totop{display:none}.colours{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:6px 16px 4px;gap:14px}.cl{flex:none;width:84px;font-size:13px}.cimg{width:72px;height:72px}.ptrust div{font-size:12px}.zhint{display:none}.hero{min-height:0;height:clamp(600px,calc(100svh - 218px),720px)}.snav::before{height:90px}.s-copy h2{font-size:clamp(36px,10.4vw,46px)}.s-copy p{font-size:15.5px;margin:12px auto 18px}.s-copy .btn-ghost,.s-meta{display:none}.s-copy .ctas .btn{flex:1 1 100%}.marquee{padding:11px 0}.mosaic{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:300px}.tile.big,.tile.wide{grid-column:auto}.tile.big{height:440px}.tcopy{left:22px;bottom:22px;max-width:52%}.tile.big .tcopy{top:28px}.tframe{display:none}.story-art{height:380px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -595,7 +628,27 @@ html.js .rv.in{opacity:1;transform:none}
   </div>
 </section>
 
-<section class="sec ivory" aria-labelledby="trh">
+<section class="sec ivory" id="looks" aria-labelledby="lkh">
+  <div class="wrap looks">
+    <div class="cmp" id="cmp">
+      <img id="cmpA" src="img/la116s.jpg" alt="Unstitched suit">
+      <div class="cmp-b"><img id="cmpB" src="img/la116w.jpg" alt="AI-styled stitched look"></div>
+      <span class="cmp-l">Unstitched</span><span class="cmp-r">Stitched look<small> · AI styled</small></span>
+      <div class="cmp-h"><i></i></div>
+      <input type="range" id="cmpR" min="0" max="100" value="50" aria-label="Slide to compare the unstitched suit and the stitched look">
+    </div>
+    <div class="lk-copy">
+      <span class="kick">From fabric to finished look</span>
+      <h2 id="lkh">See it <em>stitched</em></h2>
+      <p>Drag the slider to see how each unstitched suit can look once it is stitched as a straight kurta with pants. The stitched looks are AI-styled from photos of the actual fabric, so you can picture the finished suit before you order.</p>
+      <div class="lk-name" id="lkName"></div><span class="price" id="lkPrice"></span>
+      <div class="lk-pick" id="lkPick"></div>
+      <div class="ctas"><button class="btn btn-rani" id="lkView" data-view="LA-116">View this suit</button><a class="btn" id="lkAsk" href="https://wa.me/919910188555"><svg class="icon"><use href="#i-chat"/></svg>Ask on WhatsApp</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="trh">
   <div class="wrap">
     <div class="head"><span class="kick">Handpicked for the season</span><h2 id="trh">Trending <em>now</em></h2><svg class="orn" aria-hidden="true"><use href="#i-orn"/></svg></div>
     <div class="tabs" role="tablist" id="tabs" aria-label="Trending"></div>
@@ -682,7 +735,8 @@ html.js .rv.in{opacity:1;transform:none}
   <div class="wrap">
     <div class="head"><span class="kick">@labelanant</span><h2 id="rh">Real reviews, on our <em>Instagram</em></h2><svg class="orn" aria-hidden="true"><use href="#i-orn"/></svg><p>Label Anant is a Delhi label by Jaspriya Khurana for unstitched designer suits at fair prices. Customer reviews and photos live in the Reviews highlight on Instagram, with Reels of every new suit.</p></div>
     <div class="igrid" id="insta"></div>
-    <div class="center"><a class="btn btn-rani" href="https://www.instagram.com/labelanant"><svg class="icon"><use href="#i-ig"/></svg>Read reviews and follow</a></div>
+    <div class="center ctas" style="justify-content:center"><a class="btn btn-rani" href="https://www.instagram.com/labelanant"><svg class="icon"><use href="#i-ig"/></svg>Read reviews and follow</a><a class="btn" href="https://wa.me/919910188555?text=Hello%20Label%20Anant%2C%20here%20is%20a%20photo%20of%20me%20in%20my%20Label%20Anant%20suit.%20You%20may%20share%20it%20on%20your%20website%20and%20Instagram."><svg class="icon"><use href="#i-chat"/></svg>Send us your look</a></div>
+    <p class="small" style="text-align:center;margin-top:14px">Wearing a Label Anant suit? Send us your photo on WhatsApp and we may feature it here, with your permission.</p>
   </div>
 </section>
 
@@ -794,17 +848,17 @@ const OCC = [
 const COLOURS = {rani:["Rani pink","#C2185B"], red:["Red","#C62828"], orange:["Orange","#EF6C00"], mustard:["Mustard","#E0A800"], green:["Green","#86A24E"], mint:["Mint","#9CCFB0"], teal:["Teal","#12808A"], sky:["Sky blue","#8EC9EA"], blush:["Blush","#F4B6C6"], coral:["Coral","#F28B82"], mauve:["Mauve","#A0566F"], purple:["Purple","#6A1B9A"], wine:["Wine","#7B1E3A"], black:["Black","#222222"]};
 const PRICES = [["u25","Under ₹2,500",0,2499],["m","₹2,500 to ₹3,000",2500,3000],["o3","Above ₹3,000",3001,1e9]];
 const P = [
-  {id:"LA-112", f:"la112", pics:["la112", "la112s", "la112-d"], name:"Paisley Dupatta Suit with Embroidered Yoke", price:2895, cols:["wedding","embroidered"], occ:["wedding","reception","sangeet"], col:["teal","black","rani"], vars:["Teal","Black","Rani pink"], fab:"Embroidered", tag:"New", n:17, desc:"Suit with a soft sheen, a rich embroidered yoke in zari tones and a woven paisley dupatta with a deep border. Shown in teal, black and rani pink."},
-  {id:"LA-116", f:"la116", pics:["la116s", "la116", "la116-d"], name:"Teal Floral Print Suit", price:2350, cols:["printed"], occ:["mehendi","reception"], col:["teal"], fab:"Printed", tag:"New", n:16, desc:"Teal suit with a printed floral yoke and hem in pink and gold, paired with a striped floral dupatta."},
-  {id:"LA-114", f:"la114", name:"Kalamkari Crepe Suit with Rani Dupatta", price:2450, cols:["printed"], occ:["mehendi","reception"], col:["teal","rani"], fab:"Kalamkari crepe", tag:"New", n:15, desc:"All-over Kalamkari print on crepe in teal, pink and gold, with a solid rani pink dupatta."},
-  {id:"LA-113", f:"la113", pics:["la113s", "la113", "la113-d"], name:"Orange Paisley Print Suit", price:2350, cols:["printed"], occ:["haldi","mehendi"], col:["orange"], fab:"Printed", tag:"New", n:14, desc:"Orange suit with a maroon, blue and gold paisley print panel, and a matching printed dupatta."},
-  {id:"LA-115", f:"la115", pics:["la115s", "la115", "la115-d"], name:"Green Floral Print Suit", price:2350, cols:["printed"], occ:["mehendi","haldi"], col:["green"], fab:"Printed", tag:"New", n:13, desc:"Green suit with an all-over floral print, a dark printed centre panel and a matching dupatta."},
-  {id:"LA-117", f:"la117", pics:["la117s", "la117", "la117-d"], name:"Mauve Floral Print Suit", price:2350, cols:["printed"], occ:["reception","mehendi"], col:["mauve"], fab:"Printed", tag:"New", n:12, desc:"Mauve suit with a floral print, a purple centre panel and a printed dupatta in mauve and cream."},
+  {id:"LA-112", f:"la112", pics:["la112w", "la112s", "la112", "la112-d"], name:"Paisley Dupatta Suit with Embroidered Yoke", price:2895, cols:["wedding","embroidered"], occ:["wedding","reception","sangeet"], col:["teal","black","rani"], vars:["Teal","Black","Rani pink"], fab:"Embroidered", tag:"New", n:17, desc:"Suit with a soft sheen, a rich embroidered yoke in zari tones and a woven paisley dupatta with a deep border. Shown in teal, black and rani pink."},
+  {id:"LA-116", f:"la116", pics:["la116w", "la116s", "la116", "la116-d"], name:"Teal Floral Print Suit", price:2350, cols:["printed"], occ:["mehendi","reception"], col:["teal"], fab:"Printed", tag:"New", n:16, desc:"Teal suit with a printed floral yoke and hem in pink and gold, paired with a striped floral dupatta."},
+  {id:"LA-114", f:"la114", pics:["la114w", "la114", "la114-d"], name:"Kalamkari Crepe Suit with Rani Dupatta", price:2450, cols:["printed"], occ:["mehendi","reception"], col:["teal","rani"], fab:"Kalamkari crepe", tag:"New", n:15, desc:"All-over Kalamkari print on crepe in teal, pink and gold, with a solid rani pink dupatta."},
+  {id:"LA-113", f:"la113", pics:["la113w", "la113s", "la113", "la113-d"], name:"Orange Paisley Print Suit", price:2350, cols:["printed"], occ:["haldi","mehendi"], col:["orange"], fab:"Printed", tag:"New", n:14, desc:"Orange suit with a maroon, blue and gold paisley print panel, and a matching printed dupatta."},
+  {id:"LA-115", f:"la115", pics:["la115w", "la115s", "la115", "la115-d"], name:"Green Floral Print Suit", price:2350, cols:["printed"], occ:["mehendi","haldi"], col:["green"], fab:"Printed", tag:"New", n:13, desc:"Green suit with an all-over floral print, a dark printed centre panel and a matching dupatta."},
+  {id:"LA-117", f:"la117", pics:["la117w", "la117s", "la117", "la117-d"], name:"Mauve Floral Print Suit", price:2350, cols:["printed"], occ:["reception","mehendi"], col:["mauve"], fab:"Printed", tag:"New", n:12, desc:"Mauve suit with a floral print, a purple centre panel and a printed dupatta in mauve and cream."},
   {id:"LA-102", f:"la102", name:"Rani Pink Banarasi Suit with Potli", price:3250, cols:["wedding","banarasi"], occ:["wedding"], col:["rani"], fab:"Banarasi", tag:"Wedding edit", n:9, desc:"Rani pink suit with gold zari embroidery on the yoke, a woven Banarasi dupatta and a matching embroidered potli bag."},
   {id:"LA-110", f:"la110", name:"Mustard Banarasi Suit", price:2750, cols:["banarasi"], occ:["haldi","mehendi"], col:["mustard"], fab:"Banarasi", tag:"", n:11, desc:"Mustard yellow Banarasi weave with rani pink buttis and a gold zari border."},
   {id:"LA-104", f:"la104", name:"Red Embroidered Suit with Paisley Dupatta", price:2850, cols:["wedding","embroidered"], occ:["wedding"], col:["red"], fab:"Embroidered", tag:"Wedding edit", n:7, desc:"Red suit with a gold embroidered neckline and buttis, paired with a mustard paisley print dupatta."},
   {id:"LA-111", f:"la111", name:"Black Embroidered Suit", price:2950, cols:["embroidered"], occ:["cocktail","sangeet"], col:["black"], fab:"Embroidered", tag:"", n:10, desc:"Black suit with a multi-colour and gold embroidered neckline, scattered buttis and an embroidered border."},
-  {id:"LA-106", f:"la106", pics:["la106s", "la106", "la106-d"], name:"Purple Velvet Suit", price:3450, cols:["velvet","wedding"], occ:["sangeet","cocktail"], col:["purple"], fab:"Velvet", tag:"", n:6, desc:"Deep purple velvet set with a printed velvet dupatta and a bold rose border, rich for winter evenings."},
+  {id:"LA-106", f:"la106", pics:["la106w", "la106s", "la106", "la106-d"], name:"Purple Velvet Suit", price:3450, cols:["velvet","wedding"], occ:["sangeet","cocktail"], col:["purple"], fab:"Velvet", tag:"", n:6, desc:"Deep purple velvet set with a printed velvet dupatta and a bold rose border, rich for winter evenings."},
   {id:"LA-101", f:"la101", name:"Mint Floral Printed Suit", price:1850, cols:["printed"], occ:["mehendi","haldi"], col:["mint"], fab:"Printed", tag:"", n:8, desc:"Botanical print in mint and green, with a white thread-work yoke and lace at the hem."},
   {id:"LA-108", f:"la108", name:"Coral Banarasi Suit", price:2750, cols:["banarasi"], occ:["reception"], col:["coral"], fab:"Banarasi", tag:"", n:5, desc:"Coral pink Banarasi weave with gold zari buttis and a woven border."},
   {id:"LA-107", f:"la107", name:"Wine Velvet Suit", price:3650, cols:["velvet"], occ:["sangeet","cocktail"], col:["wine"], fab:"Velvet", tag:"", n:4, desc:"Wine velvet set with an all-over printed velvet dupatta."},
@@ -857,7 +911,9 @@ const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const rs = n => "₹" + n.toLocaleString("en-IN");
 const byId = id => P.find(p => p.id === id);
-const pics = p => (p.pics || [p.f, p.f + "-d"]).map(n => I(`img/${n}.jpg`));
+const pnames = p => p.pics || [p.f, p.f + "-d"];
+const pics = p => pnames(p).map(n => I(`img/${n}.jpg`));
+const aiPic = (p, k) => /w$/.test(pnames(p)[k]);
 const img = p => pics(p)[0], hov = p => pics(p)[1], det = p => I(`img/${p.f}-d.jpg`);
 const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
 const colName = p => p.vars ? plural(p.vars.length, "colour") : p.col.map(c => COLOURS[c][0]).join(" and ");
@@ -869,7 +925,7 @@ let recent = load("la-recent", "[]").filter(id => byId(id));
 const F = {cols:new Set(), occ:new Set(), col:new Set(), price:new Set(), q:"", sort:"featured", tag:""};
 const textOf = p => (p.name + " " + p.desc + " " + p.id + " " + p.fab + " " + p.cols.join(" ") + " " + p.occ.join(" ") + " " + p.col.map(c => COLOURS[c][0]).join(" ") + " " + (p.vars || []).join(" ")).toLowerCase();
 
-const card = (p, full = true) => `<article class="card"><div class="media"><button class="pic" data-view="${p.id}" aria-label="View ${p.name}"><img src="${img(p)}" alt="${p.name}" loading="lazy"><img src="${hov(p)}" alt="" loading="lazy"></button>${p.tag ? `<span class="tag ${p.tag === "New" ? "new" : ""}">${p.tag}</span>` : ""}<button class="heart" data-wish="${p.id}" aria-pressed="${wish.includes(p.id)}" aria-label="Save ${p.name} to wishlist"><svg class="icon"><use href="#i-heart"/></svg></button>${full ? `<button class="qadd" data-add="${p.id}">${p.vars ? "Choose colour" : "Add to bag"}</button>` : ""}</div><h3>${p.name}</h3><span class="sub">${p.fab} · ${colName(p)}</span><div class="cmeta"><span class="price">${rs(p.price)}</span><span class="code">${p.id}</span><span class="dotsw">${p.col.map(c => `<i style="background:${COLOURS[c][1]}" title="${COLOURS[c][0]}"></i>`).join("")}</span></div>${full ? `<button class="btn mobile-add" data-add="${p.id}">${p.vars ? "Choose colour" : "Add to bag"}</button>` : ""}</article>`;
+const card = (p, full = true) => `<article class="card"><div class="media"><button class="pic" data-view="${p.id}" aria-label="View ${p.name}"><img src="${img(p)}" alt="${p.name}${aiPic(p, 0) ? ", AI-styled look" : ""}" loading="lazy"><img src="${hov(p)}" alt="" loading="lazy"></button>${aiPic(p, 0) ? `<span class="aitag">AI styled look</span>` : ""}${p.tag ? `<span class="tag ${p.tag === "New" ? "new" : ""}">${p.tag}</span>` : ""}<button class="heart" data-wish="${p.id}" aria-pressed="${wish.includes(p.id)}" aria-label="Save ${p.name} to wishlist"><svg class="icon"><use href="#i-heart"/></svg></button>${full ? `<button class="qadd" data-add="${p.id}">${p.vars ? "Choose colour" : "Add to bag"}</button>` : ""}</div><h3>${p.name}</h3><span class="sub">${p.fab} · ${colName(p)}</span><div class="cmeta"><span class="price">${rs(p.price)}</span><span class="code">${p.id}</span><span class="dotsw">${p.col.map(c => `<i style="background:${COLOURS[c][1]}" title="${COLOURS[c][0]}"></i>`).join("")}</span></div>${full ? `<button class="btn mobile-add" data-add="${p.id}">${p.vars ? "Choose colour" : "Add to bag"}</button>` : ""}</article>`;
 
 /* static blocks */
 const btn = (c, k) => c[1] === "href" ? `<a class="btn ${k ? "btn-ghost" : "btn-hero"}" href="${c[2]}">${c[0]}</a>` : `<button class="btn ${k ? "btn-ghost" : "btn-hero"}" data-${c[1]}="${c[2]}">${c[0]}</button>`;
@@ -916,6 +972,20 @@ function drawTab(i) {
   $("#tabAll").dataset.tab = i; $("#tabAll").textContent = TABS[i].all;
 }
 
+/* fabric to finished look */
+const LOOKS = [["LA-116","la116s","la116w"],["LA-112","la112s","la112w"],["LA-113","la113s","la113w"],["LA-115","la115s","la115w"],["LA-117","la117s","la117w"],["LA-114","la114","la114w"],["LA-106","la106s","la106w"]];
+$("#lkPick").innerHTML = LOOKS.map(([id, a, b], i) => `<button data-look="${i}" aria-pressed="${i === 0}" aria-label="Compare ${byId(id).name}"><img src="${I(`img/${b}.jpg`)}" alt="" loading="lazy"></button>`).join("");
+function setLook(i) {
+  const [id, a, b] = LOOKS[i]; const p = byId(id);
+  $("#cmpA").src = I(`img/${a}.jpg`); $("#cmpB").src = I(`img/${b}.jpg`);
+  $("#cmpA").alt = `${p.name}, unstitched`; $("#cmpB").alt = `${p.name}, AI-styled stitched look`;
+  $("#lkName").textContent = p.name; $("#lkPrice").textContent = rs(p.price);
+  $("#lkView").dataset.view = id;
+  $("#lkAsk").href = `https://wa.me/${WA}?text=${encodeURIComponent(`Hello Label Anant, I like ${p.name} (${id}). Please share more details.`)}`;
+  $$("#lkPick button").forEach((x, k) => x.setAttribute("aria-pressed", k === i));
+}
+$("#cmpR").addEventListener("input", e => { const c = $("#cmp"); c.classList.remove("hint"); c.style.setProperty("--p", e.target.value + "%"); });
+setLook(0);
 /* carousel */
 let slide = 0, timer = null;
 const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -985,7 +1055,7 @@ function view(id) {
   const ask = encodeURIComponent(`Hello Label Anant, please share more photos and details of ${p.name} (${p.id}).`);
   const pv = pics(p);
   $("#pdBody").innerHTML = `<div class="pv"><div class="thumbs">${pv.map((s, k) => `<button data-thumb="${k}" aria-pressed="${k === 0}" aria-label="Photo ${k + 1}"><img src="${s}" alt=""></button>`).join("")}</div>
-  <div class="pmain" id="pmain"><img id="pvMain" src="${pv[0]}" alt="${p.name}">${pv.length > 1 ? `<button class="pnav l" data-pstep="-1" aria-label="Previous photo"><svg class="icon"><use href="#i-left"/></svg></button><button class="pnav r" data-pstep="1" aria-label="Next photo"><svg class="icon"><use href="#i-right"/></svg></button>` : ""}<span class="pcount" id="pcount">1 / ${pv.length}</span><span class="zhint">Hover to zoom</span></div>
+  <div class="pmain" id="pmain"><img id="pvMain" src="${pv[0]}" alt="${p.name}">${pv.length > 1 ? `<button class="pnav l" data-pstep="-1" aria-label="Previous photo"><svg class="icon"><use href="#i-left"/></svg></button><button class="pnav r" data-pstep="1" aria-label="Next photo"><svg class="icon"><use href="#i-right"/></svg></button>` : ""}<span class="pcount" id="pcount">1 / ${pv.length}</span><span class="ptag ${aiPic(p, 0) ? "ai" : ""}" id="ptag">${aiPic(p, 0) ? "AI styled look" : "Actual suit photo"}</span><span class="zhint">Hover to zoom</span></div>
   <div class="pinfo"><nav class="crumb" aria-label="Breadcrumb"><a href="#top" data-act="pclose">Home</a><span>/</span><button data-col="${p.cols[0]}">${COLS[p.cols[0]]}</button><span>/</span><span>${p.id}</span></nav>${p.tag ? `<span class="tag ${p.tag === "New" ? "new" : ""}" style="position:static;display:inline-block">${p.tag}</span>` : ""}<h2 id="pdName">${p.name}</h2><span class="price">${rs(p.price)}</span> <span class="code">· Free shipping</span><p>${p.desc}</p>
   ${p.vars ? `<div class="vars"><span>Colour</span>${p.vars.map((v, k) => `<button class="vbtn" data-var="${v}" aria-pressed="${k === 0}"><i style="background:${COLOURS[p.col[k]][1]}"></i>${v}</button>`).join("")}</div>` : ""}
   <div class="chips">${[...new Set([...p.cols.map(c => COLS[c]), p.fab, ...p.occ.map(o => OCC.find(x => x.id === o).name)])].map(c => `<span class="chip">${c}</span>`).join("")}</div>
@@ -997,7 +1067,7 @@ function view(id) {
   <details class="q"><summary>Care</summary><p>Dry clean, and store folded in a soft cotton or muslin cloth, away from damp.</p></details>
   <div class="share"><a target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(`Look at this suit from Label Anant: ${p.name}, ${rs(p.price)}\n${location.href.split("#")[0]}#p-${p.id.toLowerCase()}`)}"><svg class="icon"><use href="#i-chat"/></svg>Share on WhatsApp</a><button data-copy="${p.id}"><svg class="icon"><use href="#i-share"/></svg>Copy link</button></div></div></div>
   ${also.length ? `<div class="also"><h3>You may also like</h3><div class="cards">${also.map(x => card(x, false)).join("")}</div></div>` : ""}`;
-  view.pics = pv; view.k = 0;
+  view.pics = pv; view.k = 0; view.p = p;
   const pm = $("#pmain");
   pm.addEventListener("mousemove", e => { if (e.target.closest(".pnav")) { pm.classList.remove("zoom"); return; } const r = pm.getBoundingClientRect(); pm.style.setProperty("--zx", ((e.clientX - r.left) / r.width * 100) + "%"); pm.style.setProperty("--zy", ((e.clientY - r.top) / r.height * 100) + "%"); pm.classList.add("zoom"); });
   pm.addEventListener("mouseleave", () => pm.classList.remove("zoom"));
@@ -1012,6 +1082,7 @@ function setPic(k) {
   const im = $("#pvMain"); im.style.opacity = .3; setTimeout(() => { im.src = view.pics[k]; im.style.opacity = 1; }, 120);
   $$("[data-thumb]").forEach((b, i) => b.setAttribute("aria-pressed", i === k));
   const c = $("#pcount"); if (c) c.textContent = `${k + 1} / ${n}`;
+  const tg = $("#ptag"); if (tg) { const ai = aiPic(view.p, k); tg.textContent = ai ? "AI styled look" : "Actual suit photo"; tg.classList.toggle("ai", ai); }
 }
 function closeView() { const d = $("#pd"); if (d.open) d.close(); }
 $("#pd").addEventListener("close", () => { if (location.hash.startsWith("#p-")) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { location.hash = ""; } } });
@@ -1072,6 +1143,7 @@ document.addEventListener("click", e => {
   if (t.id === "shopBtn") { megaOpen($("#shopBtn").getAttribute("aria-expanded") !== "true"); return; }
   if (t.id === "tabAll") { jump(TABS[+d.tab].apply); return; }
   if (d.tabi) { drawTab(+d.tabi); return; }
+  if (d.look) { setLook(+d.look); return; }
   if (d.view) { panel(null); megaOpen(false); view(d.view); return; }
   if (d.add) { add(d.add); return; }
   if (d.addq) { if (add(d.addq, +$("#pq").textContent, curVar)) { closeView(); panel("bag"); } return; }
@@ -1131,7 +1203,8 @@ $("#totop").addEventListener("click", () => window.scrollTo({top:0, behavior: re
 const io = !reduce && "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); setTimeout(() => { e.target.style.transitionDelay = ""; }, 1400); } }), {rootMargin:"0px 0px -6% 0px"}) : null;
 if (io) document.documentElement.classList.add("js");
 function reveal(sel, step = 0) { $$(sel).forEach((el, i) => { el.classList.add("rv"); if (step) el.style.transitionDelay = (i % 6) * step + "ms"; io ? io.observe(el) : el.classList.add("in"); }); }
-reveal("main .head"); reveal(".circ", 70); reveal(".tile", 110); reveal(".oc", 80); reveal(".cl", 40); reveal(".ptile", 110); reveal(".spics"); reveal(".sinfo"); reveal(".story-art"); reveal(".story-copy"); reveal(".fab", 90); reveal(".step", 90); reveal(".igrid a", 60); reveal(".tr", 70);
+reveal("main .head"); reveal(".lk-copy");
+if (io) { const ch = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { $("#cmp").classList.add("hint"); ch.disconnect(); } }), {threshold:.5}); ch.observe($("#cmp")); } reveal(".circ", 70); reveal(".tile", 110); reveal(".oc", 80); reveal(".cl", 40); reveal(".ptile", 110); reveal(".spics"); reveal(".sinfo"); reveal(".story-art"); reveal(".story-copy"); reveal(".fab", 90); reveal(".step", 90); reveal(".igrid a", 60); reveal(".tr", 70);
 measure(); onScroll();
 filterBar(); grid(); drawTab(0); drawBag(); drawWish(); drawRecent(); go(0); autoplay(true); route();
 }
