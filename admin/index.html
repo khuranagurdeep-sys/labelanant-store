@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Label Anant · Owner dashboard (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#FBF8F3;--card:#fff;--ink:#2A1520;--soft:#6E5A63;--mute:#9A8890;--line:#ECE3D8;--rani:#9C1458;--deep:#5E0B35;--gold:#B8913F;--gold2:#E9D49A;--blush:#F7EEEF;--ok:#2E7D4F;--warn:#B26A00;--bad:#B3261E;--info:#2F5D8A}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 15px/1.55 Jost,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+b,strong,th{font-weight:500}
+h1,h2,h3{font-family:"Bodoni Moda",Georgia,serif;font-weight:400;margin:0;line-height:1.15}
+a{color:var(--rani)}
+.icon{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.num{font-variant-numeric:tabular-nums}
+.demo-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 14px;padding:7px 14px;background:var(--deep);color:var(--gold2);font-size:12.5px;letter-spacing:.04em;text-align:center}
+.demo-bar b{color:#fff;letter-spacing:.14em;text-transform:uppercase;font-size:11.5px}
+.demo-bar button{border:1px solid rgba(233,212,154,.5);background:none;color:var(--gold2);padding:2px 10px;cursor:pointer;font-size:12px}
+/* login */
+.login{min-height:calc(100vh - 34px);display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse 60% 60% at 50% 40%,#fff,transparent 70%),var(--blush)}
+.lbox{width:min(420px,100%);background:#fff;padding:36px 32px;border-top:3px solid var(--gold);box-shadow:0 30px 60px rgba(94,11,53,.12);text-align:center}
+.lbox .alogo{height:84px;margin:0 auto 10px;display:block}
+.lbox h1{font-size:28px;margin-bottom:4px}
+.lbox p{color:var(--soft);margin:0 0 20px;font-size:14px}
+.field{display:flex;flex-direction:column;gap:5px;text-align:left;font-size:12.5px;color:var(--soft);letter-spacing:.04em}
+.field input,.field select,.field textarea{min-height:42px;border:1px solid var(--line);background:#fff;padding:9px 12px;font-size:15px;color:var(--ink);border-radius:2px;width:100%}
+.field textarea{min-height:84px;resize:vertical;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid rgba(156,20,88,.25);border-color:var(--rani)}
+.field small{color:var(--mute);font-size:12px;letter-spacing:0}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--bad)}
+.ferr{color:var(--bad);font-size:12.5px;min-height:1em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 18px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:13px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;border-radius:2px;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--rani);color:var(--rani)}
+.btn.pri{background:var(--rani);border-color:var(--rani);color:#fff}
+.btn.pri:hover{background:var(--deep);border-color:var(--deep);color:#fff}
+.btn.sm{min-height:32px;padding:0 12px;font-size:12px}
+.btn.danger{color:var(--bad);border-color:#E7C3C0}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.lk{border:0;background:none;padding:0;color:var(--rani);cursor:pointer;text-decoration:underline;font-size:inherit}
+/* shell */
+.shell{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:calc(100vh - 34px)}
+.side{position:sticky;top:34px;height:calc(100vh - 34px);overflow:auto;background:#fff;border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column;gap:2px}
+.side .alogo{height:62px;margin:0 0 4px 10px;align-self:flex-start}
+.side .who{font-size:12px;color:var(--mute);margin:0 0 14px 12px;letter-spacing:.06em}
+.nav-a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:2px;color:var(--ink);text-decoration:none;font-size:14.5px}
+.nav-a:hover{background:var(--blush)}
+.nav-a.on{background:var(--rani);color:#fff}
+.nav-a .cnt{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--gold2);color:var(--deep);font-size:11.5px;display:inline-flex;align-items:center;justify-content:center;font-weight:500}
+.nav-a.on .cnt{background:#fff}
+.side .foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.main{padding:24px clamp(14px,2.6vw,36px) 80px}
+.phead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px}
+.phead h1{font-size:clamp(26px,2.6vw,34px)}
+.phead p{margin:4px 0 0;color:var(--soft);font-size:14px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-height:32px;padding:0 12px;border:1px solid var(--line);background:#fff;border-radius:16px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .n{font-size:11.5px;opacity:.7}
+.card{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:18px 20px}
+.card h2{font-size:21px;margin-bottom:12px}
+.card h2 small{font-family:Jost,sans-serif;font-size:12.5px;color:var(--mute);margin-left:8px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2w{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.chip input{width:auto!important;min-height:0!important;padding:0!important;margin:0;border:0!important;accent-color:var(--rani)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin-bottom:16px}
+.kpi{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:2px;text-align:left;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.kpi:hover{border-color:var(--rani);box-shadow:0 6px 16px rgba(94,11,53,.08)}
+.kpi span{font-size:12px;color:var(--soft);letter-spacing:.04em}
+.kpi b{font-family:"Bodoni Moda",Georgia,serif;font-weight:400;font-size:26px;line-height:1.2}
+.kpi small{font-size:12px;color:var(--mute)}
+.kpi.hot{border-left:3px solid var(--rani)}
+.kpi.na{cursor:default}
+.kpi.na:hover{border-color:var(--line);box-shadow:none}
+.attn{display:flex;flex-direction:column}
+.attn button{display:flex;align-items:center;gap:12px;width:100%;padding:11px 4px;border:0;border-bottom:1px solid var(--line);background:none;cursor:pointer;text-align:left}
+.attn button:last-child{border-bottom:0}
+.attn button:hover{background:var(--blush)}
+.attn .ic{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none;font-size:13px;font-weight:500;color:#fff}
+.attn .t{flex:1}
+.attn .t small{display:block;color:var(--mute);font-size:12.5px}
+.sev-critical{background:var(--bad)}.sev-serious{background:#C2410C}.sev-warning{background:var(--warn)}.sev-info{background:var(--info)}
+/* tables */
+.tbl-wrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:2px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;white-space:nowrap}
+th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);background:#FDFBF8;position:sticky;top:0;z-index:1}
+td.r,th.r{text-align:right}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--blush)}
+tr.static{cursor:default}
+td .sub{display:block;color:var(--mute);font-size:12px}
+.wrap-cell{white-space:normal;min-width:220px}
+.thumb{width:40px;height:50px;object-fit:cover;display:block;background:var(--blush)}
+.ph{width:40px;height:50px;display:block}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:2px 9px;border-radius:12px;font-size:12px;white-space:nowrap;border:1px solid transparent}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.b-ok{color:var(--ok);background:#EAF5EE}.b-warn{color:var(--warn);background:#FFF4E0}.b-bad{color:var(--bad);background:#FDECEA}.b-info{color:var(--info);background:#E9F0F7}.b-mute{color:var(--soft);background:#F2EEEA}.b-rani{color:var(--rani);background:var(--blush)}
+.empty{padding:28px;text-align:center;color:var(--mute)}
+/* drawer & modal */
+.scrim{position:fixed;inset:0;background:rgba(42,21,32,.35);z-index:70;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(640px,100%);background:var(--bg);z-index:80;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(42,21,32,.15)}
+.drawer.on{transform:none}
+.dh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:#fff;border-bottom:1px solid var(--line)}
+.dh h2{font-size:22px}
+.dh .x{width:40px;height:40px;border:0;background:none;cursor:pointer;font-size:22px}
+.db{flex:1;overflow:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.df{padding:12px 20px;background:#fff;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+.form .full{grid-column:1/-1}
+.form h3{grid-column:1/-1;font-size:17px;margin-top:8px;padding-top:12px;border-top:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;font-size:14px}
+.kv dt{color:var(--soft)}
+.kv dd{margin:0}
+.timeline{list-style:none;margin:0;padding:0 0 0 16px;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 12px 12px;font-size:13.5px}
+.timeline li::before{content:"";position:absolute;left:-23px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)}
+.timeline small{display:block;color:var(--mute)}
+.items-mini{display:flex;flex-direction:column;gap:8px}
+.items-mini div{display:flex;justify-content:space-between;gap:10px;font-size:14px}
+.modal{position:fixed;left:50%;top:50%;width:min(520px,94vw);max-height:90vh;overflow:auto;transform:translate(-50%,-46%);opacity:0;pointer-events:none;background:#fff;z-index:90;padding:22px;transition:.25s;box-shadow:0 30px 70px rgba(42,21,32,.25);border-top:3px solid var(--gold)}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal h2{font-size:22px;margin-bottom:12px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 18px;font-size:14px;opacity:0;transition:.3s;z-index:100;pointer-events:none;max-width:92vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+/* charts */
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .ax{font-size:11px;fill:var(--mute)}
+.chart .grid-l{stroke:#EFE8E0;stroke-width:1}
+.chart .base{stroke:#D8CCBE;stroke-width:1}
+.chart .bar{fill:var(--rani);transition:opacity .15s}
+.chart .bar.dim{opacity:.35}
+.chart .line{fill:none;stroke:var(--rani);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .area{fill:url(#ga)}
+.chart .hair{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+.chart .dot{fill:var(--rani);stroke:#fff;stroke-width:2;opacity:0}
+.chart .lbl{font-size:12px;fill:var(--ink)}
+.chart .val{font-size:12px;fill:var(--soft)}
+.tip{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--line);box-shadow:0 8px 20px rgba(42,21,32,.12);padding:7px 10px;font-size:12.5px;opacity:0;transition:opacity .12s;white-space:nowrap;z-index:5}
+.tip b{display:block;font-size:14px;color:var(--ink)}
+.tip span{color:var(--soft)}
+details.tv summary{cursor:pointer;color:var(--soft);font-size:12.5px;margin-top:8px}
+details.tv table{font-size:13px;margin-top:6px}
+details.tv tr{cursor:default}
+/* assistant */
+.chat{display:flex;flex-direction:column;gap:12px;max-width:900px}
+.msgs{display:flex;flex-direction:column;gap:12px;min-height:280px}
+.msg{max-width:88%;padding:12px 14px;border-radius:2px;font-size:14.5px;line-height:1.55}
+.msg.me{align-self:flex-end;background:var(--rani);color:#fff}
+.msg.ai{align-self:flex-start;background:#fff;border:1px solid var(--line)}
+.msg.ai table{margin-top:8px;font-size:13px}
+.msg.ai tr{cursor:default}
+.msg.ai th,.msg.ai td{padding:6px 8px}
+.chatbar{display:flex;gap:8px;position:sticky;bottom:12px;background:var(--bg);padding:8px 0}
+.chatbar input{flex:1;min-height:46px;border:1px solid var(--line);padding:0 14px;font-size:15px;background:#fff}
+.sugg{display:flex;flex-wrap:wrap;gap:6px}
+.note{padding:10px 14px;background:#FFF8E8;border-left:3px solid var(--gold);color:#6A4914;font-size:13.5px}
+.note.info{background:#EEF3F8;border-color:var(--info);color:#244766}
+.mtabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto}
+.mtab{padding:10px 14px;border:0;border-bottom:2px solid transparent;background:none;cursor:pointer;font-size:14px;color:var(--soft);white-space:nowrap}
+.mtab[aria-selected=true]{color:var(--rani);border-color:var(--rani)}
+.swatch{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:4px;border:1px solid rgba(0,0,0,.12)}
+.imgs{display:flex;flex-wrap:wrap;gap:8px}
+.imgs figure{position:relative;margin:0;width:72px}
+.imgs img{width:72px;height:90px;object-fit:cover;display:block}
+.imgs button{position:absolute;top:2px;right:2px;width:22px;height:22px;border:0;border-radius:50%;background:rgba(255,255,255,.9);cursor:pointer;font-size:13px;line-height:1}
+.mob-top,.bnav{display:none}
+@media (max-width:1100px){.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}.side{display:none}
+  .mob-top{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:34px;z-index:50}
+  .mob-top .alogo{height:44px}
+  .bnav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:55;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0)}
+  .bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:56px;font-size:10.5px;color:var(--ink);text-decoration:none;position:relative}
+  .bnav a.on{color:var(--rani)}
+  .bnav .cnt{position:absolute;top:5px;right:calc(50% - 20px);min-width:16px;height:16px;border-radius:8px;background:var(--rani);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+  .g2,.g3,.g2w{grid-template-columns:1fr}
+  .demo-bar{position:relative}
+  .mob-top{top:0!important}
+  .main{padding-bottom:90px}
+  .form{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi b{font-size:22px}
+  .hide-m{display:none}
+}
+@media print{.demo-bar,.side,.mob-top,.bnav,.no-print{display:none!important}.shell{display:block}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8H4z"/><path d="M10 19v-5h4v5"/></symbol>
+<symbol id="i-orders" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M4 7.5L12 4l8 3.5v9L12 20l-8-3.5z"/><path d="M4 7.5l8 3.5 8-3.5M12 11v9"/></symbol>
+<symbol id="i-stack" viewBox="0 0 24 24"><path d="M4 9l8-4 8 4-8 4z"/><path d="M4 13l8 4 8-4M4 17l8 4 8-4"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3.4 3-5 5.5-5s4.7 1.6 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14c2.4 0 4 1.4 4.6 4"/></symbol>
+<symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10v4l3 .5V9.5zM7 9.5l11-4.5v14L7 14.5"/><path d="M8 15l1.5 4.5h2.5L11 15.5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16v-5M12 16V7M17 16v-8"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2.1-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2.1 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2.1 1.2L10 21h4l.5-2.6c.8-.3 1.5-.7 2.1-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></symbol>
+<symbol id="i-shop" viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9h16v2a3 3 0 0 1-5.3 2 3 3 0 0 1-5.4 0A3 3 0 0 1 4 11z"/><path d="M5.5 14v6h13v-6"/></symbol>
+<symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4h5v16h-5"/><path d="M10 8l-4 4 4 4M6 12h10"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</svg>
+<div class="demo-bar" role="note"><b>Demo mode</b><span>Sample data saved in this browser only. No real orders, payments or messages.</span><button data-act="reset">Reset demo data</button></div>
+
+<section class="login" id="login" hidden>
+  <form class="lbox" id="loginForm" novalidate>
+    <svg class="alogo" viewBox="609.0 655.5 782.0 689.5" role="img" aria-label="Label Anant"><defs><linearGradient id="al0g" gradientUnits="userSpaceOnUse" x1="613.0" y1="659.5" x2="1387.0" y2="1341.1"><stop offset="0" stop-color="#8E6B2E"/><stop offset="0.32" stop-color="#C9A24F"/><stop offset="0.5" stop-color="#A7843C"/><stop offset="0.7" stop-color="#D2B062"/><stop offset="1" stop-color="#7E5E26"/></linearGradient><mask id="al0m" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="2000"><rect width="2000" height="2000" fill="#fff"/><rect x="925.6" y="1095.7" width="466.4" height="129.0" fill="#000"/></mask></defs><path d="M613.0 1089.55V1078.37H664.6V670.73H613.0V659.55H791.3066666666667V670.73H739.9933333333333V1078.37H809.3666666666667Q841.76 1078.37 863.26 1070.1999999999998Q884.76 1062.03 897.8033333333333 1046.6933333333332Q910.8466666666667 1031.3566666666666 917.1533333333334 1009.5699999999999Q923.46 987.7833333333333 925.4666666666667 960.55H936.6466666666668V1089.55Z" fill="url(#al0g)" stroke="url(#al0g)" stroke-width="3.44" stroke-linejoin="round"/><path d="M1179.2584 867.7215999999999 1339.012 1329.0256H1387.0V1341.1H1187.308V1329.0256H1245.2032L1202.4784 1196.5167999999999H1047.9879999999998L1001.5479999999999 1329.0256H1067.1832V1341.1H930.6495999999999V1329.0256H987.3063999999998L1150.156 867.7215999999999ZM1198.4535999999998 1184.4424 1128.1743999999999 966.7935999999999 1052.0128 1184.4424Z" fill="url(#al0g)" stroke="url(#al0g)" stroke-width="3.44" stroke-linejoin="round" mask="url(#al0m)"/><path d="M613.0 1119.6499999999999V1201.35H659.2188571428571V1188.9782857142857H626.7722857142857V1119.6499999999999ZM717.0341999999999 1180.3414285714284 726.3713428571427 1201.35H742.0110571428571L701.9780571428571 1115.0981428571426L662.0617714285713 1201.35H677.5847714285713L686.9219142857143 1180.3414285714284ZM701.9780571428571 1142.7594285714285 713.1826285714285 1168.6699999999998H690.8901999999999ZM791.1895428571428 1156.9985714285713Q791.1895428571428 1156.9985714285713 791.306257142857 1156.9985714285713Q797.1419714285713 1154.781 800.4683285714284 1150.5209285714286Q803.7946857142856 1146.260857142857 803.7946857142856 1140.1917142857142Q803.7946857142856 1133.1888571428572 800.4683285714284 1128.637Q797.1419714285713 1124.0851428571427 791.306257142857 1121.8675714285714Q785.4705428571427 1119.6499999999999 777.6506857142856 1119.6499999999999H753.0239714285714V1201.35H779.051257142857Q787.8048285714285 1201.35 794.3991857142856 1198.8406428571427Q800.9935428571428 1196.3312857142855 804.7284 1191.0791428571429Q808.4632571428571 1185.827 808.4632571428571 1177.7737142857143Q808.4632571428571 1171.9379999999999 806.1289714285713 1167.7362857142857Q803.7946857142856 1163.5345714285713 799.7096857142857 1160.8501428571428Q795.9748285714285 1158.3991428571428 791.1895428571428 1156.9985714285713ZM766.796257142857 1163.1844285714285H778.234257142857Q781.7356857142856 1163.1844285714285 784.6535428571428 1163.9430714285713Q787.5713999999999 1164.7017142857142 789.7889714285714 1166.3940714285714Q792.0065428571428 1168.0864285714285 793.1736857142856 1170.5374285714286Q794.3408285714285 1172.9884285714286 794.3408285714285 1176.3731428571427Q794.3408285714285 1180.925 792.2399714285714 1183.901214285714Q790.1391142857142 1186.8774285714285 786.5209714285713 1188.3947142857141Q782.9028285714285 1189.9119999999998 778.234257142857 1189.9119999999998H766.796257142857ZM766.796257142857 1152.4467142857143V1130.9712857142856H776.7169714285714Q782.5526857142856 1130.9712857142856 786.1124714285713 1133.7724285714285Q789.672257142857 1136.5735714285713 789.672257142857 1141.7089999999998Q789.672257142857 1145.0937142857142 788.038257142857 1147.486357142857Q786.4042571428571 1149.879 783.4864 1151.162857142857Q780.5685428571428 1152.4467142857143 776.7169714285714 1152.4467142857143ZM824.8450285714285 1119.6499999999999V1201.35H874.5653142857142V1189.2117142857142H838.3838857142856V1163.5345714285713H872.2310285714285V1151.6297142857143H838.3838857142856V1131.7882857142856H874.5653142857142V1119.6499999999999ZM893.1646571428571 1119.6499999999999V1201.35H939.3835142857142V1188.9782857142857H906.9369428571428V1119.6499999999999ZM1033.888914285714 1180.3414285714284 1043.226057142857 1201.35H1058.8657714285712L1018.8327714285713 1115.0981428571426L978.9164857142855 1201.35H994.4394857142855L1003.7766285714284 1180.3414285714284ZM1018.8327714285713 1142.7594285714285 1030.0373428571427 1168.6699999999998H1007.7449142857141ZM1129.5196857142855 1119.6499999999999V1174.5057142857142L1069.8786857142854 1115.5649999999998V1201.35H1083.4175428571427V1146.4942857142855L1143.0585428571426 1205.435V1119.6499999999999ZM1209.1605999999997 1180.3414285714284 1218.4977428571426 1201.35H1234.1374571428569L1194.104457142857 1115.0981428571426L1154.1881714285712 1201.35H1169.7111714285713L1179.048314285714 1180.3414285714284ZM1194.104457142857 1142.7594285714285 1205.3090285714284 1168.6699999999998H1183.0165999999997ZM1304.7913714285712 1119.6499999999999V1174.5057142857142L1245.1503714285711 1115.5649999999998V1201.35H1258.6892285714284V1146.4942857142855L1318.3302285714283 1205.435V1119.6499999999999ZM1330.0434285714284 1132.3718571428572H1351.6355714285712V1201.35H1365.407857142857V1132.3718571428572H1386.9999999999998V1119.6499999999999H1330.0434285714284Z" fill="#7E5E26"/></svg>
+    <h1>Owner dashboard</h1>
+    <p>Demo sign-in. The live version uses a secure server login with two-factor authentication.</p>
+    <div class="field"><label for="le">Email</label><input id="le" type="email" value="owner@labelanant.demo" autocomplete="username"></div>
+    <div class="field" style="margin-top:10px"><label for="lp">Password</label><input id="lp" type="password" value="demo1234" autocomplete="current-password"><small>Demo password: demo1234</small></div>
+    <p class="ferr" id="lerr" role="alert"></p>
+    <button class="btn pri" style="width:100%">Sign in</button>
+  </form>
+</section>
+
+<div class="shell" id="app" hidden>
+  <aside class="side">
+    <svg class="alogo" viewBox="609.0 655.5 782.0 689.5" role="img" aria-label="Label Anant"><defs><linearGradient id="al1g" gradientUnits="userSpaceOnUse" x1="613.0" y1="659.5" x2="1387.0" y2="1341.1"><stop offset="0" stop-color="#8E6B2E"/><stop offset="0.32" stop-color="#C9A24F"/><stop offset="0.5" stop-color="#A7843C"/><stop offset="0.7" stop-color="#D2B062"/><stop offset="1" stop-color="#7E5E26"/></linearGradient><mask id="al1m" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="2000"><rect width="2000" height="2000" fill="#fff"/><rect x="925.6" y="1095.7" width="466.4" height="129.0" fill="#000"/></mask></defs><path d="M613.0 1089.55V1078.37H664.6V670.73H613.0V659.55H791.3066666666667V670.73H739.9933333333333V1078.37H809.3666666666667Q841.76 1078.37 863.26 1070.1999999999998Q884.76 1062.03 897.8033333333333 1046.6933333333332Q910.8466666666667 1031.3566666666666 917.1533333333334 1009.5699999999999Q923.46 987.7833333333333 925.4666666666667 960.55H936.6466666666668V1089.55Z" fill="url(#al1g)" stroke="url(#al1g)" stroke-width="3.44" stroke-linejoin="round"/><path d="M1179.2584 867.7215999999999 1339.012 1329.0256H1387.0V1341.1H1187.308V1329.0256H1245.2032L1202.4784 1196.5167999999999H1047.9879999999998L1001.5479999999999 1329.0256H1067.1832V1341.1H930.6495999999999V1329.0256H987.3063999999998L1150.156 867.7215999999999ZM1198.4535999999998 1184.4424 1128.1743999999999 966.7935999999999 1052.0128 1184.4424Z" fill="url(#al1g)" stroke="url(#al1g)" stroke-width="3.44" stroke-linejoin="round" mask="url(#al1m)"/><path d="M613.0 1119.6499999999999V1201.35H659.2188571428571V1188.9782857142857H626.7722857142857V1119.6499999999999ZM717.0341999999999 1180.3414285714284 726.3713428571427 1201.35H742.0110571428571L701.9780571428571 1115.0981428571426L662.0617714285713 1201.35H677.5847714285713L686.9219142857143 1180.3414285714284ZM701.9780571428571 1142.7594285714285 713.1826285714285 1168.6699999999998H690.8901999999999ZM791.1895428571428 1156.9985714285713Q791.1895428571428 1156.9985714285713 791.306257142857 1156.9985714285713Q797.1419714285713 1154.781 800.4683285714284 1150.5209285714286Q803.7946857142856 1146.260857142857 803.7946857142856 1140.1917142857142Q803.7946857142856 1133.1888571428572 800.4683285714284 1128.637Q797.1419714285713 1124.0851428571427 791.306257142857 1121.8675714285714Q785.4705428571427 1119.6499999999999 777.6506857142856 1119.6499999999999H753.0239714285714V1201.35H779.051257142857Q787.8048285714285 1201.35 794.3991857142856 1198.8406428571427Q800.9935428571428 1196.3312857142855 804.7284 1191.0791428571429Q808.4632571428571 1185.827 808.4632571428571 1177.7737142857143Q808.4632571428571 1171.9379999999999 806.1289714285713 1167.7362857142857Q803.7946857142856 1163.5345714285713 799.7096857142857 1160.8501428571428Q795.9748285714285 1158.3991428571428 791.1895428571428 1156.9985714285713ZM766.796257142857 1163.1844285714285H778.234257142857Q781.7356857142856 1163.1844285714285 784.6535428571428 1163.9430714285713Q787.5713999999999 1164.7017142857142 789.7889714285714 1166.3940714285714Q792.0065428571428 1168.0864285714285 793.1736857142856 1170.5374285714286Q794.3408285714285 1172.9884285714286 794.3408285714285 1176.3731428571427Q794.3408285714285 1180.925 792.2399714285714 1183.901214285714Q790.1391142857142 1186.8774285714285 786.5209714285713 1188.3947142857141Q782.9028285714285 1189.9119999999998 778.234257142857 1189.9119999999998H766.796257142857ZM766.796257142857 1152.4467142857143V1130.9712857142856H776.7169714285714Q782.5526857142856 1130.9712857142856 786.1124714285713 1133.7724285714285Q789.672257142857 1136.5735714285713 789.672257142857 1141.7089999999998Q789.672257142857 1145.0937142857142 788.038257142857 1147.486357142857Q786.4042571428571 1149.879 783.4864 1151.162857142857Q780.5685428571428 1152.4467142857143 776.7169714285714 1152.4467142857143ZM824.8450285714285 1119.6499999999999V1201.35H874.5653142857142V1189.2117142857142H838.3838857142856V1163.5345714285713H872.2310285714285V1151.6297142857143H838.3838857142856V1131.7882857142856H874.5653142857142V1119.6499999999999ZM893.1646571428571 1119.6499999999999V1201.35H939.3835142857142V1188.9782857142857H906.9369428571428V1119.6499999999999ZM1033.888914285714 1180.3414285714284 1043.226057142857 1201.35H1058.8657714285712L1018.8327714285713 1115.0981428571426L978.9164857142855 1201.35H994.4394857142855L1003.7766285714284 1180.3414285714284ZM1018.8327714285713 1142.7594285714285 1030.0373428571427 1168.6699999999998H1007.7449142857141ZM1129.5196857142855 1119.6499999999999V1174.5057142857142L1069.8786857142854 1115.5649999999998V1201.35H1083.4175428571427V1146.4942857142855L1143.0585428571426 1205.435V1119.6499999999999ZM1209.1605999999997 1180.3414285714284 1218.4977428571426 1201.35H1234.1374571428569L1194.104457142857 1115.0981428571426L1154.1881714285712 1201.35H1169.7111714285713L1179.048314285714 1180.3414285714284ZM1194.104457142857 1142.7594285714285 1205.3090285714284 1168.6699999999998H1183.0165999999997ZM1304.7913714285712 1119.6499999999999V1174.5057142857142L1245.1503714285711 1115.5649999999998V1201.35H1258.6892285714284V1146.4942857142855L1318.3302285714283 1205.435V1119.6499999999999ZM1330.0434285714284 1132.3718571428572H1351.6355714285712V1201.35H1365.407857142857V1132.3718571428572H1386.9999999999998V1119.6499999999999H1330.0434285714284Z" fill="#7E5E26"/></svg>
+    <div class="who">Owner · demo</div>
+    <nav id="nav"></nav>
+    <div class="foot">
+      <a class="nav-a" href="../index.html?demo=1" target="_blank" rel="noopener"><svg class="icon"><use href="#i-shop"/></svg>Shop in demo mode</a>
+      <a class="nav-a" href="../index.html" target="_blank" rel="noopener"><svg class="icon"><use href="#i-shop"/></svg>Live shop</a>
+      <button class="nav-a" style="border:0;background:none;cursor:pointer;text-align:left" data-act="logout"><svg class="icon"><use href="#i-out"/></svg>Sign out</button>
+    </div>
+  </aside>
+  <div>
+    <div class="mob-top"><svg class="alogo" viewBox="609.0 655.5 782.0 689.5" role="img" aria-label="Label Anant"><defs><linearGradient id="al2g" gradientUnits="userSpaceOnUse" x1="613.0" y1="659.5" x2="1387.0" y2="1341.1"><stop offset="0" stop-color="#8E6B2E"/><stop offset="0.32" stop-color="#C9A24F"/><stop offset="0.5" stop-color="#A7843C"/><stop offset="0.7" stop-color="#D2B062"/><stop offset="1" stop-color="#7E5E26"/></linearGradient><mask id="al2m" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="2000"><rect width="2000" height="2000" fill="#fff"/><rect x="925.6" y="1095.7" width="466.4" height="129.0" fill="#000"/></mask></defs><path d="M613.0 1089.55V1078.37H664.6V670.73H613.0V659.55H791.3066666666667V670.73H739.9933333333333V1078.37H809.3666666666667Q841.76 1078.37 863.26 1070.1999999999998Q884.76 1062.03 897.8033333333333 1046.6933333333332Q910.8466666666667 1031.3566666666666 917.1533333333334 1009.5699999999999Q923.46 987.7833333333333 925.4666666666667 960.55H936.6466666666668V1089.55Z" fill="url(#al2g)" stroke="url(#al2g)" stroke-width="3.44" stroke-linejoin="round"/><path d="M1179.2584 867.7215999999999 1339.012 1329.0256H1387.0V1341.1H1187.308V1329.0256H1245.2032L1202.4784 1196.5167999999999H1047.9879999999998L1001.5479999999999 1329.0256H1067.1832V1341.1H930.6495999999999V1329.0256H987.3063999999998L1150.156 867.7215999999999ZM1198.4535999999998 1184.4424 1128.1743999999999 966.7935999999999 1052.0128 1184.4424Z" fill="url(#al2g)" stroke="url(#al2g)" stroke-width="3.44" stroke-linejoin="round" mask="url(#al2m)"/><path d="M613.0 1119.6499999999999V1201.35H659.2188571428571V1188.9782857142857H626.7722857142857V1119.6499999999999ZM717.0341999999999 1180.3414285714284 726.3713428571427 1201.35H742.0110571428571L701.9780571428571 1115.0981428571426L662.0617714285713 1201.35H677.5847714285713L686.9219142857143 1180.3414285714284ZM701.9780571428571 1142.7594285714285 713.1826285714285 1168.6699999999998H690.8901999999999ZM791.1895428571428 1156.9985714285713Q791.1895428571428 1156.9985714285713 791.306257142857 1156.9985714285713Q797.1419714285713 1154.781 800.4683285714284 1150.5209285714286Q803.7946857142856 1146.260857142857 803.7946857142856 1140.1917142857142Q803.7946857142856 1133.1888571428572 800.4683285714284 1128.637Q797.1419714285713 1124.0851428571427 791.306257142857 1121.8675714285714Q785.4705428571427 1119.6499999999999 777.6506857142856 1119.6499999999999H753.0239714285714V1201.35H779.051257142857Q787.8048285714285 1201.35 794.3991857142856 1198.8406428571427Q800.9935428571428 1196.3312857142855 804.7284 1191.0791428571429Q808.4632571428571 1185.827 808.4632571428571 1177.7737142857143Q808.4632571428571 1171.9379999999999 806.1289714285713 1167.7362857142857Q803.7946857142856 1163.5345714285713 799.7096857142857 1160.8501428571428Q795.9748285714285 1158.3991428571428 791.1895428571428 1156.9985714285713ZM766.796257142857 1163.1844285714285H778.234257142857Q781.7356857142856 1163.1844285714285 784.6535428571428 1163.9430714285713Q787.5713999999999 1164.7017142857142 789.7889714285714 1166.3940714285714Q792.0065428571428 1168.0864285714285 793.1736857142856 1170.5374285714286Q794.3408285714285 1172.9884285714286 794.3408285714285 1176.3731428571427Q794.3408285714285 1180.925 792.2399714285714 1183.901214285714Q790.1391142857142 1186.8774285714285 786.5209714285713 1188.3947142857141Q782.9028285714285 1189.9119999999998 778.234257142857 1189.9119999999998H766.796257142857ZM766.796257142857 1152.4467142857143V1130.9712857142856H776.7169714285714Q782.5526857142856 1130.9712857142856 786.1124714285713 1133.7724285714285Q789.672257142857 1136.5735714285713 789.672257142857 1141.7089999999998Q789.672257142857 1145.0937142857142 788.038257142857 1147.486357142857Q786.4042571428571 1149.879 783.4864 1151.162857142857Q780.5685428571428 1152.4467142857143 776.7169714285714 1152.4467142857143ZM824.8450285714285 1119.6499999999999V1201.35H874.5653142857142V1189.2117142857142H838.3838857142856V1163.5345714285713H872.2310285714285V1151.6297142857143H838.3838857142856V1131.7882857142856H874.5653142857142V1119.6499999999999ZM893.1646571428571 1119.6499999999999V1201.35H939.3835142857142V1188.9782857142857H906.9369428571428V1119.6499999999999ZM1033.888914285714 1180.3414285714284 1043.226057142857 1201.35H1058.8657714285712L1018.8327714285713 1115.0981428571426L978.9164857142855 1201.35H994.4394857142855L1003.7766285714284 1180.3414285714284ZM1018.8327714285713 1142.7594285714285 1030.0373428571427 1168.6699999999998H1007.7449142857141ZM1129.5196857142855 1119.6499999999999V1174.5057142857142L1069.8786857142854 1115.5649999999998V1201.35H1083.4175428571427V1146.4942857142855L1143.0585428571426 1205.435V1119.6499999999999ZM1209.1605999999997 1180.3414285714284 1218.4977428571426 1201.35H1234.1374571428569L1194.104457142857 1115.0981428571426L1154.1881714285712 1201.35H1169.7111714285713L1179.048314285714 1180.3414285714284ZM1194.104457142857 1142.7594285714285 1205.3090285714284 1168.6699999999998H1183.0165999999997ZM1304.7913714285712 1119.6499999999999V1174.5057142857142L1245.1503714285711 1115.5649999999998V1201.35H1258.6892285714284V1146.4942857142855L1318.3302285714283 1205.435V1119.6499999999999ZM1330.0434285714284 1132.3718571428572H1351.6355714285712V1201.35H1365.407857142857V1132.3718571428572H1386.9999999999998V1119.6499999999999H1330.0434285714284Z" fill="#7E5E26"/></svg><button class="btn sm" data-act="more">More</button></div>
+    <main class="main" id="main"></main>
+  </div>
+  <nav class="bnav" id="bnav"></nav>
+</div>
+
+<div class="scrim" id="scrim" data-act="close"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"><div class="dh"><h2 id="dTitle"></h2><button class="x" data-act="close" aria-label="Close">×</button></div><div class="db" id="dBody"></div><div class="df" id="dFoot"></div></aside>
+<div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="../assets/catalogue.js"></script>
+<script src="../assets/demo.js"></script>
+<script>
+(function () {
+"use strict";
+const D = window.LA_DEMO; let db = D.load();
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const rs = n => "₹" + Math.round(n || 0).toLocaleString("en-IN");
+const fmtD = t => t ? new Date(t).toLocaleDateString("en-IN", {day: "numeric", month: "short", year: "numeric"}) : "–";
+const fmtDT = t => t ? new Date(t).toLocaleString("en-IN", {day: "numeric", month: "short", hour: "numeric", minute: "2-digit"}) : "–";
+const ago = t => { const m = (Date.now() - Date.parse(t)) / 6e4; return m < 60 ? Math.max(1, m | 0) + " min ago" : m < 1440 ? (m / 60 | 0) + " h ago" : (m / 1440 | 0) + " d ago"; };
+const save = () => { D.save(db); renderNav(); };
+const P = id => D.product(db, id);
+const C = id => db.customers.find(c => c.id === id);
+const img = s => s ? (s.startsWith("data:") || s.startsWith("http") ? s : "../" + s) : "";
+const thumb = p => p.images && p.images.length ? `<img class="thumb" src="${esc(img(p.images[0]))}" alt="" loading="lazy">` : `<span class="ph" style="background:linear-gradient(135deg,${esc(p.placeholder || "#ddd")},#fff)" aria-hidden="true"></span>`;
+const maskPhone = p => p ? "+91 " + p.slice(0, 5) + " " + p.slice(5) : "";
+const ST_BADGE = {placed: "b-warn", payment_failed: "b-bad", payment_verified: "b-info", confirmed: "b-info", processing: "b-info", packed: "b-info", shipped: "b-rani", delivered: "b-ok", cancelled: "b-mute", return_requested: "b-warn", return_approved: "b-warn", returned: "b-mute", refund_pending: "b-warn", refunded: "b-mute"};
+const sBadge = s => `<span class="badge ${ST_BADGE[s] || "b-mute"}">${esc(D.STATUS[s] || s)}</span>`;
+const stockBadge = p => p.stock == null ? '<span class="badge b-mute">Not set</span>' : p.stock === 0 ? '<span class="badge b-bad">Out of stock</span>' : p.stock <= (p.threshold ?? db.settings.lowStockDefault) ? `<span class="badge b-warn">Low · ${p.stock}</span>` : `<span class="badge b-ok">${p.stock} in stock</span>`;
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2400); }
+const TO_DISPATCH = ["payment_verified", "confirmed", "processing", "packed"];
+
+/* ---------- login ---------- */
+const authed = () => { try { return sessionStorage.getItem("la-admin-demo") === "1"; } catch (e) { return false; } };
+function showApp() { $("#login").hidden = true; $("#app").hidden = false; route(); }
+$("#loginForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const em = $("#le").value.trim(), pw = $("#lp").value;
+  if (!/^\S+@\S+\.\S+$/.test(em)) { $("#lerr").textContent = "Enter a valid email address."; return; }
+  if (pw !== "demo1234") { $("#lerr").textContent = "Wrong password. For this demo the password is demo1234."; return; }
+  try { sessionStorage.setItem("la-admin-demo", "1"); } catch (err) {}
+  D.log(db, "Owner", "Signed in (demo)"); save(); showApp();
+});
+
+/* ---------- navigation ---------- */
+const PAGES = [["dashboard", "Dashboard", "i-home"], ["orders", "Orders", "i-orders"], ["products", "Products", "i-box"], ["inventory", "Inventory", "i-stack"], ["customers", "Customers", "i-users"], ["marketing", "Marketing", "i-mega"], ["reports", "Reports", "i-chart"], ["assistant", "Assistant", "i-spark"], ["settings", "Settings", "i-gear"]];
+function counts() {
+  return {orders: db.orders.filter(o => ["placed", ...TO_DISPATCH, "return_requested", "refund_pending"].includes(o.status)).length,
+    inventory: db.notifications.filter(n => !n.read).length, customers: db.tickets.filter(t => t.status === "open").length,
+    marketing: db.campaigns.filter(c => c.status === "pending_approval").length};
+}
+function renderNav() {
+  const cur = (location.hash.slice(2).split("?")[0]) || "dashboard", n = counts();
+  $("#nav").innerHTML = PAGES.map(([id, l, ic]) => `<a class="nav-a ${cur === id ? "on" : ""}" href="#/${id}"><svg class="icon"><use href="#${ic}"/></svg>${l}${n[id] ? `<span class="cnt">${n[id]}</span>` : ""}</a>`).join("");
+  $("#bnav").innerHTML = PAGES.slice(0, 4).concat([["assistant", "Assistant", "i-spark"]]).map(([id, l, ic]) => `<a class="${cur === id ? "on" : ""}" href="#/${id}"><svg class="icon"><use href="#${ic}"/></svg>${l}${n[id] ? `<span class="cnt">${n[id]}</span>` : ""}</a>`).join("");
+}
+function q() { const s = location.hash.split("?")[1] || ""; return Object.fromEntries(new URLSearchParams(s)); }
+function go(page, params) { location.hash = "#/" + page + (params ? "?" + new URLSearchParams(params) : ""); }
+function route() {
+  if (!authed()) { $("#app").hidden = true; $("#login").hidden = false; return; }
+  const page = (location.hash.slice(2).split("?")[0]) || "dashboard";
+  closeAll(); renderNav();
+  (VIEWS[page] || VIEWS.dashboard)(q());
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+/* ---------- drawer & modal ---------- */
+function drawer(title, body, foot) { $("#dTitle").textContent = title; $("#dBody").innerHTML = body; $("#dFoot").innerHTML = foot || ""; $("#drawer").classList.add("on"); $("#drawer").setAttribute("aria-hidden", "false"); $("#scrim").classList.add("on"); $("#dBody").scrollTop = 0; }
+function modal(html) { $("#modal").innerHTML = html; $("#modal").classList.add("on"); $("#scrim").classList.add("on"); const f = $("#modal input,#modal select,#modal textarea"); if (f) setTimeout(() => f.focus(), 50); }
+function closeModal() { $("#modal").classList.remove("on"); if (!$("#drawer").classList.contains("on")) $("#scrim").classList.remove("on"); }
+function closeAll() { $("#drawer").classList.remove("on"); $("#drawer").setAttribute("aria-hidden", "true"); $("#modal").classList.remove("on"); $("#scrim").classList.remove("on"); }
+document.addEventListener("keydown", e => { if (e.key === "Escape") { if ($("#modal").classList.contains("on")) closeModal(); else closeAll(); } });
+
+/* ---------- charts (single series, rani, with hover tooltips and a table view) ---------- */
+function niceMax(v) { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); return Math.ceil(v / p / (v / p > 5 ? 2 : 1)) * p * (v / p > 5 ? 2 : 1); }
+function tableView(rows, fmt, h1, h2) { return `<details class="tv"><summary>Show as table</summary><table><thead><tr class="static"><th>${esc(h1)}</th><th class="r">${esc(h2)}</th></tr></thead><tbody>${rows.map(r => `<tr class="static"><td>${esc(r.label)}</td><td class="r num">${esc(fmt(r.value))}</td></tr>`).join("")}</tbody></table></details>`; }
+function lineChart(el, rows, fmt, unit) {
+  const W = 640, H = 220, L = 54, R = 12, T = 14, B = 28, max = niceMax(Math.max(...rows.map(r => r.value), 1));
+  const x = i => L + (rows.length < 2 ? 0 : i * (W - L - R) / (rows.length - 1)), y = v => T + (H - T - B) * (1 - v / max);
+  const pts = rows.map((r, i) => `${x(i).toFixed(1)},${y(r.value).toFixed(1)}`).join(" ");
+  const ticks = [0, .5, 1].map(f => f * max);
+  const every = Math.max(1, Math.ceil(rows.length / 6));
+  el.innerHTML = `<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(unit)}"><defs><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#9C1458" stop-opacity=".16"/><stop offset="1" stop-color="#9C1458" stop-opacity="0"/></linearGradient></defs>
+    ${ticks.map(t => `<line class="grid-l" x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}"/><text class="ax" x="${L - 8}" y="${y(t) + 4}" text-anchor="end">${esc(fmt(t, true))}</text>`).join("")}
+    <line class="base" x1="${L}" x2="${W - R}" y1="${y(0)}" y2="${y(0)}"/>
+    ${rows.map((r, i) => i % every === 0 || i === rows.length - 1 ? `<text class="ax" x="${x(i)}" y="${H - 8}" text-anchor="middle">${esc(r.short || r.label)}</text>` : "").join("")}
+    <polygon class="area" points="${L},${y(0)} ${pts} ${x(rows.length - 1)},${y(0)}"/><polyline class="line" points="${pts}"/>
+    <line class="hair" y1="${T}" y2="${y(0)}"/><circle class="dot" r="4.5"/><rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" class="hit"/></svg><div class="tip"></div></div>${tableView(rows, fmt, "Date", unit)}`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip"), hair = el.querySelector(".hair"), dot = el.querySelector(".dot");
+  const show = ev => {
+    const r = svg.getBoundingClientRect(), sx = (ev.clientX - r.left) * W / r.width;
+    const i = Math.max(0, Math.min(rows.length - 1, Math.round((sx - L) / ((W - L - R) / Math.max(1, rows.length - 1)))));
+    hair.setAttribute("x1", x(i)); hair.setAttribute("x2", x(i)); hair.style.opacity = .5; dot.setAttribute("cx", x(i)); dot.setAttribute("cy", y(rows[i].value)); dot.style.opacity = 1;
+    tip.innerHTML = ""; const b = document.createElement("b"); b.textContent = fmt(rows[i].value); const s = document.createElement("span"); s.textContent = rows[i].label + (rows[i].extra ? " · " + rows[i].extra : ""); tip.append(b, s);
+    tip.style.opacity = 1; const px = x(i) * r.width / W; tip.style.left = Math.min(r.width - 150, Math.max(0, px - 60)) + "px"; tip.style.top = "0px";
+  };
+  const hide = () => { tip.style.opacity = 0; hair.style.opacity = 0; dot.style.opacity = 0; };
+  svg.addEventListener("pointermove", show); svg.addEventListener("pointerleave", hide);
+}
+function barChart(el, rows, fmt, unit, onClick) {
+  if (!rows.length) { el.innerHTML = '<div class="empty">No data for this period.</div>'; return; }
+  const bh = 22, gap = 10, L = 150, R = 70, W = 640, H = rows.length * (bh + gap) + 6, max = Math.max(...rows.map(r => r.value), 1);
+  el.innerHTML = `<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(unit)}">${rows.map((r, i) => {
+    const w = Math.max(2, (W - L - R) * r.value / max), yy = i * (bh + gap);
+    return `<g class="bg" data-i="${i}" tabindex="0" style="cursor:${onClick ? "pointer" : "default"}"><rect x="0" y="${yy - 4}" width="${W}" height="${bh + 8}" fill="transparent"/><text class="lbl" x="${L - 10}" y="${yy + 15}" text-anchor="end">${esc(r.label.length > 22 ? r.label.slice(0, 21) + "…" : r.label)}</text><path class="bar" d="M${L},${yy} h${w - 4} a4,4 0 0 1 4,4 v${bh - 8} a4,4 0 0 1 -4,4 h-${w - 4} z"/><text class="val num" x="${L + w + 8}" y="${yy + 15}">${esc(fmt(r.value))}</text></g>`;
+  }).join("")}</svg><div class="tip"></div></div>${tableView(rows, fmt, "Item", unit)}`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip");
+  el.querySelectorAll(".bg").forEach(g => {
+    const i = +g.dataset.i, on = () => { el.querySelectorAll(".bar").forEach((b, k) => b.classList.toggle("dim", k !== i)); tip.innerHTML = ""; const b = document.createElement("b"); b.textContent = fmt(rows[i].value); const s = document.createElement("span"); s.textContent = rows[i].label + (rows[i].extra ? " · " + rows[i].extra : ""); tip.append(b, s); tip.style.opacity = 1; const r = svg.getBoundingClientRect(); tip.style.left = Math.min(r.width - 170, L * r.width / W) + "px"; tip.style.top = (i * (bh + gap) * r.width / W - 44) + "px"; };
+    const off = () => { el.querySelectorAll(".bar").forEach(b => b.classList.remove("dim")); tip.style.opacity = 0; };
+    g.addEventListener("pointerenter", on); g.addEventListener("focus", on); g.addEventListener("pointerleave", off); g.addEventListener("blur", off);
+    if (onClick) { g.addEventListener("click", () => onClick(rows[i])); g.addEventListener("keydown", e => { if (e.key === "Enter") onClick(rows[i]); }); }
+  });
+}
+const fmtRs = (v, short) => short && v >= 1000 ? "₹" + (v >= 1e5 ? (v / 1e5).toFixed(1) + "L" : (v / 1000).toFixed(v >= 1e4 ? 0 : 1) + "k") : rs(v);
+const fmtN = v => Math.round(v).toLocaleString("en-IN");
+
+/* ---------- metrics ---------- */
+function metrics(range) {
+  const inR = o => D.inRange(o.createdAt, range);
+  const all = db.orders.filter(inR), paid = all.filter(o => D.PAID.includes(o.status));
+  const gross = paid.reduce((s, o) => s + o.subtotal, 0), disc = paid.reduce((s, o) => s + o.discount, 0);
+  const refunds = db.orders.filter(o => o.refund && o.refund.status === "refunded" && D.inRange(o.refund.at || o.createdAt, range)).reduce((s, o) => s + o.refund.amount, 0);
+  const revenue = paid.filter(o => o.status !== "refunded").reduce((s, o) => s + o.total, 0);
+  const custs = db.customers.filter(c => D.inRange(c.createdAt, range));
+  const segs = db.customers.map(c => D.segmentOf(db, c));
+  return {all, paid, gross, disc, refunds, revenue, net: gross - disc - refunds, aov: paid.length ? (gross - disc) / paid.length : 0, newCust: custs.length, repeat: segs.filter(s => s.orders >= 2).length, buyers: segs.filter(s => s.orders >= 1).length};
+}
+const todayRev = () => D.paidOrders(db).filter(o => D.inRange(o.createdAt, "today") && o.status !== "refunded").reduce((s, o) => s + o.total, 0);
+function attention() {
+  const A = [], H = 36e5, now = Date.now();
+  const awaitPay = db.orders.filter(o => o.status === "placed");
+  const old = awaitPay.filter(o => now - Date.parse(o.createdAt) > 2 * H);
+  if (awaitPay.length) A.push(["warning", awaitPay.length, `${awaitPay.length} order${awaitPay.length > 1 ? "s" : ""} awaiting payment`, old.length ? `${old.length} waiting more than 2 hours` : "Placed recently", () => go("orders", {status: "placed"})]);
+  const fail = db.orders.filter(o => o.status === "payment_failed");
+  if (fail.length) A.push(["serious", fail.length, `${fail.length} failed payment${fail.length > 1 ? "s" : ""}`, "Follow up or cancel", () => go("orders", {status: "payment_failed"})]);
+  const disp = db.orders.filter(o => TO_DISPATCH.includes(o.status));
+  const late = disp.filter(o => now - Date.parse(o.history.find(h => h.to === "payment_verified")?.at || o.createdAt) > 48 * H);
+  if (disp.length) A.push([late.length ? "serious" : "info", disp.length, `${disp.length} paid order${disp.length > 1 ? "s" : ""} to dispatch`, late.length ? `${late.length} paid more than 2 days ago` : "All within 2 days", () => go("orders", {status: "dispatch"})]);
+  const delayed = db.orders.filter(o => o.status === "shipped" && now - Date.parse(o.history.find(h => h.to === "shipped").at) > 5 * 864e5);
+  if (delayed.length) A.push(["serious", delayed.length, `${delayed.length} shipment${delayed.length > 1 ? "s" : ""} in transit over 5 days`, "Check with the courier", () => go("orders", {status: "delayed"})]);
+  const ret = db.orders.filter(o => o.status === "return_requested");
+  if (ret.length) A.push(["warning", ret.length, `${ret.length} return request${ret.length > 1 ? "s" : ""}`, "Review eligibility", () => go("orders", {status: "return_requested"})]);
+  const ref = db.orders.filter(o => o.status === "refund_pending" || (o.status === "cancelled" && o.refund && o.refund.status === "pending"));
+  if (ref.length) A.push(["critical", ref.length, `${ref.length} refund${ref.length > 1 ? "s" : ""} to process`, "Customer is waiting for money back", () => go("orders", {status: "refunds"})]);
+  const out = db.products.filter(p => p.status === "published" && p.stock === 0), low = db.products.filter(p => p.status === "published" && p.stock > 0 && p.stock <= (p.threshold ?? db.settings.lowStockDefault));
+  if (out.length) A.push(["critical", out.length, `${out.length} product${out.length > 1 ? "s" : ""} out of stock`, out.slice(0, 2).map(p => p.name).join(", ") + (out.length > 2 ? "…" : ""), () => go("inventory", {f: "out"})]);
+  if (low.length) A.push(["warning", low.length, `${low.length} product${low.length > 1 ? "s" : ""} running low`, low.slice(0, 2).map(p => p.name).join(", ") + (low.length > 2 ? "…" : ""), () => go("inventory", {f: "low"})]);
+  const tk = db.tickets.filter(t => t.status === "open");
+  if (tk.length) A.push(["warning", tk.length, `${tk.length} open customer issue${tk.length > 1 ? "s" : ""}`, tk.slice(0, 1).map(t => t.subject).join(""), () => go("customers", {tab: "tickets"})]);
+  const pend = db.campaigns.filter(c => c.status === "pending_approval");
+  if (pend.length) A.push(["info", pend.length, `${pend.length} campaign${pend.length > 1 ? "s" : ""} waiting for your approval`, pend[0].name, () => go("marketing")]);
+  const unv = db.products.filter(p => p.real && !p.verified);
+  if (unv.length) A.push(["info", unv.length, `${unv.length} live products have unverified prices and details`, "Sample data written from photos", () => go("products", {f: "unverified"})]);
+  return A;
+}
+
+/* ---------- views ---------- */
+const VIEWS = {};
+let range = "30d";
+VIEWS.dashboard = function () {
+  const m = metrics(range), st = s => db.orders.filter(o => o.status === s && D.inRange(o.createdAt, range)).length;
+  const live = db.products.filter(p => p.status === "published"), out = live.filter(p => p.stock === 0).length, low = live.filter(p => p.stock > 0 && p.stock <= (p.threshold ?? db.settings.lowStockDefault)).length;
+  const k = (label, val, sub, go_, hot) => `<button class="kpi ${hot ? "hot" : ""} ${go_ ? "" : "na"}" ${go_ ? `data-go="${esc(go_)}"` : "disabled"}><span>${label}</span><b class="num">${val}</b>${sub ? `<small>${sub}</small>` : ""}</button>`;
+  const rl = {today: "today", "7d": "last 7 days", "30d": "last 30 days", "90d": "last 90 days", all: "all time"}[range];
+  $("#main").innerHTML = `<div class="phead"><div><h1>Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}</h1><p>Here is Label Anant at a glance · ${new Date().toLocaleDateString("en-IN", {weekday: "long", day: "numeric", month: "long"})}</p></div>
+    <div class="chips" role="group" aria-label="Date range">${[["today", "Today"], ["7d", "7 days"], ["30d", "30 days"], ["90d", "90 days"], ["all", "All"]].map(([v, l]) => `<button class="chip" data-range="${v}" aria-pressed="${range === v}">${l}</button>`).join("")}</div></div>
+  <div class="grid g2w" style="margin-bottom:16px">
+    <div class="card"><h2>Needs your attention</h2><div class="attn" id="attn"></div></div>
+    <div class="card"><h2>Today</h2><div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin:0">
+      ${k("Revenue today", rs(todayRev()), D.paidOrders(db).filter(o => D.inRange(o.createdAt, "today")).length + " paid orders", "orders?range=today", 1)}
+      ${k("Awaiting payment", db.orders.filter(o => o.status === "placed").length, "Not yet paid", "orders?status=placed")}
+      ${k("To dispatch", db.orders.filter(o => TO_DISPATCH.includes(o.status)).length, "Paid, not shipped", "orders?status=dispatch", 1)}
+      ${k("Open issues", db.tickets.filter(t => t.status === "open").length, "Customer support", "customers?tab=tickets")}</div></div>
+  </div>
+  <h2 style="font-size:22px;margin:22px 0 12px">Performance · ${rl}</h2>
+  <div class="kpis">
+    ${k("Revenue", rs(m.revenue), "Paid orders, after discounts", "reports?tab=sales", 1)}
+    ${k("Orders", m.all.length, `${m.paid.length} paid`, "orders?range=" + range)}
+    ${k("Average order value", rs(m.aov), "Paid orders", "reports?tab=sales")}
+    ${k("Gross sales", rs(m.gross), "Before discounts", "reports?tab=sales")}
+    ${k("Discounts", rs(m.disc), "Coupons used", "marketing?tab=coupons")}
+    ${k("Refunds", rs(m.refunds), "Money returned", "orders?status=refunds")}
+    ${k("Net sales", rs(m.net), "Gross − discounts − refunds", "reports?tab=sales")}
+    ${k("Shipping charged", rs(0), "Free shipping", null)}
+    ${k("Awaiting payment", st("placed"), "In this period", "orders?status=placed")}
+    ${k("Delivered", st("delivered"), "In this period", "orders?status=delivered")}
+    ${k("Cancelled", st("cancelled"), "In this period", "orders?status=cancelled")}
+    ${k("Returns", db.orders.filter(o => ["return_requested", "return_approved", "returned"].includes(o.status)).length, "Open return cases", "orders?status=returns")}
+    ${k("Active products", live.length, `${db.products.filter(p => p.status === "draft").length} drafts`, "products")}
+    ${k("Out of stock", out, "Published products", "inventory?f=out", out > 0)}
+    ${k("Low stock", low, "At or below threshold", "inventory?f=low")}
+    ${k("Customers", db.customers.length, `${m.newCust} new in period`, "customers")}
+    ${k("Repeat customers", m.repeat, `of ${m.buyers} buyers`, "customers?seg=repeat")}
+    ${k("Conversion rate", "–", "Needs Google Analytics 4", null)}
+    ${k("Gross margin", "–", "Add cost prices to see this", null)}
+  </div>
+  <div class="grid g2">
+    <div class="card"><h2>Revenue by day <small>${rl}</small></h2><div id="c1"></div></div>
+    <div class="card"><h2>Revenue by collection <small>${rl}</small></h2><div id="c2"></div></div>
+    <div class="card"><h2>Bestsellers <small>units sold · ${rl}</small></h2><div id="c3"></div></div>
+    <div class="card"><h2>Revenue by state <small>${rl}</small></h2><div id="c4"></div></div>
+  </div>`;
+  const at = attention();
+  $("#attn").innerHTML = at.length ? at.map((a, i) => `<button data-attn="${i}"><span class="ic sev-${a[0]}" aria-label="${a[0]}">${a[1]}</span><span class="t">${esc(a[2])}<small>${esc(a[3])}</small></span><span aria-hidden="true">›</span></button>`).join("") : '<div class="empty">Nothing needs attention right now.</div>';
+  $$("[data-attn]").forEach(b => b.addEventListener("click", () => at[+b.dataset.attn][4]()));
+  const days = range === "today" ? 1 : range === "7d" ? 7 : range === "90d" ? 90 : range === "all" ? 90 : 30;
+  const rows = []; for (let i = days - 1; i >= 0; i--) { const d = new Date(Date.now() - i * 864e5); const ds = d.toDateString(); const os = D.paidOrders(db).filter(o => new Date(o.createdAt).toDateString() === ds && o.status !== "refunded"); rows.push({label: d.toLocaleDateString("en-IN", {day: "numeric", month: "short"}), short: d.toLocaleDateString("en-IN", {day: "numeric", month: "short"}), value: os.reduce((s, o) => s + o.total, 0), extra: os.length + " orders"}); }
+  if (range === "today") { $("#c1").innerHTML = `<div class="kpis" style="margin:0"><div class="kpi na"><span>Revenue today</span><b>${rs(todayRev())}</b></div></div>`; } else lineChart($("#c1"), rows, fmtRs, "Revenue");
+  const byCol = {}, byProd = {}, byState = {};
+  m.paid.filter(o => o.status !== "refunded").forEach(o => { o.items.forEach(it => { const p = P(it.pid); const share = it.qty * it.price * (o.total / Math.max(1, o.subtotal)); (p ? p.collections : ["other"]).slice(0, 1).forEach(c => byCol[c] = (byCol[c] || 0) + share); byProd[it.pid] = (byProd[it.pid] || 0) + it.qty; }); byState[o.address.state] = (byState[o.address.state] || 0) + o.total; });
+  barChart($("#c2"), Object.entries(byCol).sort((a, b) => b[1] - a[1]).map(([c, v]) => ({label: D.COLS[c] || c, value: v, key: c})), v => fmtRs(v), "Revenue", r => go("products", {col: r.key}));
+  barChart($("#c3"), Object.entries(byProd).sort((a, b) => b[1] - a[1]).slice(0, 7).map(([id, v]) => ({label: (P(id) || {name: id}).name.replace("Demo · ", ""), value: v, key: id, extra: id})), fmtN, "Units", r => openProduct(r.key));
+  barChart($("#c4"), Object.entries(byState).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([s, v]) => ({label: s, value: v})), v => fmtRs(v), "Revenue");
+};
+
+/* orders */
+const ORDER_FILTERS = [["all", "All"], ["placed", "Awaiting payment"], ["dispatch", "To dispatch"], ["shipped", "Shipped"], ["delayed", "Delayed"], ["delivered", "Delivered"], ["returns", "Returns"], ["refunds", "Refunds"], ["payment_failed", "Payment failed"], ["cancelled", "Cancelled"]];
+function orderMatch(o, f) {
+  if (!f || f === "all") return true;
+  if (f === "dispatch") return TO_DISPATCH.includes(o.status);
+  if (f === "delayed") return o.status === "shipped" && Date.now() - Date.parse(o.history.find(h => h.to === "shipped").at) > 5 * 864e5;
+  if (f === "returns") return ["return_requested", "return_approved", "returned"].includes(o.status);
+  if (f === "refunds") return o.status === "refund_pending" || o.status === "refunded" || (o.status === "cancelled" && o.refund);
+  return o.status === f;
+}
+VIEWS.orders = function (p) {
+  const f = p.status || "all", search = p.q || "", rng = p.range || "all";
+  const list = db.orders.filter(o => orderMatch(o, f) && D.inRange(o.createdAt, rng) && (!search || (o.id + " " + o.customerName + " " + o.phone + " " + (o.tracking || "")).toLowerCase().includes(search.toLowerCase())));
+  $("#main").innerHTML = `<div class="phead"><div><h1>Orders</h1><p>${list.length} of ${db.orders.length} orders${rng !== "all" ? " · " + rng : ""}. Click an order to process it.</p></div><div class="tools"><input id="oq" class="btn" style="text-transform:none;letter-spacing:0;min-width:220px;cursor:text" placeholder="Search order, name, phone" value="${esc(search)}" aria-label="Search orders"><button class="btn" data-act="export-orders">Export Excel</button></div></div>
+  <div class="chips" style="margin-bottom:14px">${ORDER_FILTERS.map(([v, l]) => `<button class="chip" data-of="${v}" aria-pressed="${f === v}">${l}<span class="n">${db.orders.filter(o => orderMatch(o, v)).length}</span></button>`).join("")}</div>
+  <div class="tbl-wrap"><table><thead><tr class="static"><th>Order</th><th>Date</th><th>Customer</th><th class="hide-m">Items</th><th class="r">Total</th><th class="hide-m">Payment</th><th>Status</th></tr></thead><tbody>
+  ${list.map(o => `<tr data-order="${o.id}"><td><b>${o.id}</b></td><td>${fmtD(o.createdAt)}<span class="sub">${ago(o.createdAt)}</span></td><td>${esc(o.customerName)}<span class="sub">${esc(o.address.city)}</span></td><td class="hide-m">${o.items.reduce((s, x) => s + x.qty, 0)} item${o.items.reduce((s, x) => s + x.qty, 0) > 1 ? "s" : ""}</td><td class="r num">${rs(o.total)}</td><td class="hide-m">${esc(o.payment.method)}<span class="sub">${esc(o.payment.status)}</span></td><td>${sBadge(o.status)}</td></tr>`).join("") || '<tr class="static"><td colspan="7" class="empty">No orders match.</td></tr>'}
+  </tbody></table></div>`;
+  $("#oq").addEventListener("change", e => go("orders", Object.assign({}, p, {q: e.target.value})));
+  $$("[data-of]").forEach(b => b.addEventListener("click", () => go("orders", Object.assign({}, p, {status: b.dataset.of}))));
+  $$("[data-order]").forEach(r => r.addEventListener("click", () => openOrder(r.dataset.order)));
+  if (p.open) openOrder(p.open);
+};
+const ACTION_LABEL = {payment_verified: "Mark payment verified", payment_failed: "Mark payment failed", confirmed: "Confirm order", processing: "Start processing", packed: "Mark packed", shipped: "Ship order", delivered: "Mark delivered", cancelled: "Cancel order", return_requested: "Record return request", return_approved: "Approve return", returned: "Item received back", refund_pending: "Start refund", refunded: "Process refund", placed: "Retry payment", delivered_back: "Reject return"};
+function openOrder(id) {
+  const o = db.orders.find(x => x.id === id); if (!o) return;
+  const c = C(o.customerId);
+  const next = (D.FLOW[o.status] || []);
+  const body = `<div class="grid g2" style="gap:10px"><div>${sBadge(o.status)} <span class="badge ${o.payment.status === "verified" ? "b-ok" : o.payment.status === "failed" ? "b-bad" : o.payment.status === "refunded" ? "b-mute" : "b-warn"}">Payment ${esc(o.payment.status)}</span></div><div style="text-align:right;color:var(--mute);font-size:13px">${fmtDT(o.createdAt)}</div></div>
+    ${o.demo ? '<div class="note">Demo order. No real customer or payment.</div>' : ""}
+    <div class="card"><h2>Items</h2><div class="items-mini">${o.items.map(x => `<div><span>${esc(x.name)}${x.variant ? ` · ${esc(x.variant)}` : ""} <span style="color:var(--mute)">× ${x.qty}</span><span class="sub" style="display:block;color:var(--mute);font-size:12px">${esc(x.sku || x.pid)}</span></span><span class="num">${rs(x.qty * x.price)}</span></div>`).join("")}
+      <div style="border-top:1px solid var(--line);padding-top:8px"><span>Subtotal</span><span class="num">${rs(o.subtotal)}</span></div>${o.discount ? `<div><span>Discount ${esc(o.coupon)}</span><span class="num">− ${rs(o.discount)}</span></div>` : ""}<div><span>Shipping</span><span>Free</span></div><div><span>Tax</span><span style="color:var(--mute)">${esc(o.gstNote)}</span></div><div><b>Total</b><b class="num">${rs(o.total)}</b></div></div></div>
+    <div class="card"><h2>Customer and delivery</h2><dl class="kv"><dt>Customer</dt><dd><button class="lk" data-cust="${o.customerId}">${esc(o.customerName)}</button></dd><dt>Phone</dt><dd>${esc(maskPhone(o.phone))}</dd><dt>Address</dt><dd>${esc(o.address.line)}, ${esc(o.address.city)}, ${esc(o.address.state)} ${esc(o.address.pin)}</dd><dt>Courier</dt><dd>${o.courier ? esc(o.courier) + " · " + esc(o.tracking) : "–"}</dd></dl></div>
+    <div class="card"><h2>Payment</h2><dl class="kv"><dt>Method</dt><dd>${esc(o.payment.method)}</dd><dt>Reference</dt><dd>${esc(o.payment.ref || "–")}</dd><dt>Verified</dt><dd>${fmtDT(o.payment.at)}</dd>${o.refund ? `<dt>Refund</dt><dd>${rs(o.refund.amount)} · ${esc(o.refund.status)} ${o.refund.ref ? "· " + esc(o.refund.ref) : ""}</dd>` : ""}${o.returnReason ? `<dt>Return reason</dt><dd>${esc(o.returnReason)}</dd>` : ""}</dl></div>
+    <div class="card"><h2>Internal notes</h2>${o.notes.length ? o.notes.map(n => `<p style="margin:0 0 8px;font-size:14px">${esc(n.text)}<small style="display:block;color:var(--mute)">${esc(n.by)} · ${fmtDT(n.at)}</small></p>`).join("") : '<p style="color:var(--mute);margin:0 0 8px">No notes yet.</p>'}<div style="display:flex;gap:8px"><input id="noteIn" class="btn" style="flex:1;text-transform:none;letter-spacing:0;cursor:text" placeholder="Add a note for your team" aria-label="Add a note"><button class="btn sm" data-addnote="${o.id}">Add</button></div></div>
+    <div class="card"><h2>Status history</h2><ul class="timeline">${o.history.slice().reverse().map(h => `<li><b>${esc(D.STATUS[h.to])}</b>${h.note ? " · " + esc(h.note) : ""}<small>${fmtDT(h.at)} · ${esc(h.by)}</small></li>`).join("")}</ul></div>`;
+  const acts = next.map(s => `<button class="btn ${s === "cancelled" || s === "payment_failed" ? "danger" : ["payment_verified", "confirmed", "processing", "packed", "shipped", "delivered", "return_approved", "returned", "refund_pending", "refunded"].includes(s) && next.indexOf(s) === 0 ? "pri" : ""}" data-move="${s}" data-oid="${o.id}">${o.status === "return_requested" && s === "delivered" ? "Reject return" : ACTION_LABEL[s]}</button>`).join("")
+    + (o.status === "cancelled" && o.refund && o.refund.status === "pending" ? `<button class="btn pri" data-act="refund-cancel" data-oid="${o.id}">Process refund</button>` : "")
+    + `<button class="btn" data-invoice="${o.id}">Invoice</button><button class="btn" data-wamsg="${o.id}">Message customer</button>`;
+  drawer("Order " + o.id, body, acts);
+}
+function doMove(oid, to) {
+  const o = db.orders.find(x => x.id === oid);
+  if (to === "shipped") return modal(`<h2>Ship ${esc(oid)}</h2><div class="form"><div class="field"><label for="sc">Courier</label><select id="sc"><option value="">Choose courier</option><option>Delhivery</option><option>Blue Dart</option><option>DTDC</option><option>Xpressbees</option><option>India Post</option><option>Other</option></select></div><div class="field"><label for="st">Tracking number</label><input id="st" placeholder="e.g. 1234567890"></div><p class="ferr full" id="serr"></p></div><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn pri" data-ship="${esc(oid)}">Mark shipped</button></div><p class="note info" style="margin-top:10px">With Shiprocket connected, the label, courier and tracking number fill in automatically.</p>`);
+  if (to === "cancelled") return modal(`<h2>Cancel ${esc(oid)}?</h2><p>Stock goes back to inventory.${o.payment.status === "verified" ? " The customer has paid, so a refund of " + rs(o.total) + " will be created." : ""}</p><div class="field"><label for="cr">Reason</label><input id="cr" placeholder="e.g. Customer asked to cancel"></div><p class="ferr" id="cerr"></p><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Keep order</button><button class="btn danger" data-cancel="${esc(oid)}">Cancel order</button></div>`);
+  if (to === "return_requested") return modal(`<h2>Return request for ${esc(oid)}</h2><div class="field"><label for="rr">Reason given by the customer</label><input id="rr"></div><p class="ferr" id="rerr"></p><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Close</button><button class="btn pri" data-retreq="${esc(oid)}">Record request</button></div>`);
+  if (to === "refunded") return modal(`<h2>Refund ${rs(o.refund ? o.refund.amount : o.total)}?</h2><p>In the live store this sends the refund through the payment gateway to the customer's original payment method. Here it is simulated.</p><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Not now</button><button class="btn pri" data-refund="${esc(oid)}">Process refund</button></div>`);
+  try { D.move(db, oid, to, "Owner", to === "delivered" && o.status === "return_requested" ? "Return rejected" : ""); save(); toast(`${oid}: ${D.STATUS[db.orders.find(x => x.id === oid).status]}`); openOrder(oid); refreshList(); } catch (e) { toast(e.message); }
+}
+function refreshList() { const page = (location.hash.slice(2).split("?")[0]) || "dashboard"; if (page === "orders" || page === "dashboard") { const open = $("#drawer").classList.contains("on"); const keep = $("#dBody").innerHTML; (VIEWS[page])(q()); if (open) { $("#drawer").classList.add("on"); $("#scrim").classList.add("on"); } } renderNav(); }
+function invoice(oid) {
+  const o = db.orders.find(x => x.id === oid), w = window.open("", "_blank");
+  if (!w) return toast("Allow pop-ups to open the invoice");
+  w.document.write(`<!DOCTYPE html><title>Invoice ${esc(o.id)}</title><style>body{font:14px/1.5 Arial,sans-serif;max-width:720px;margin:30px auto;color:#222;padding:0 16px}h1{font:400 28px Georgia,serif;margin:0}table{width:100%;border-collapse:collapse;margin:18px 0}td,th{border-bottom:1px solid #ddd;padding:8px;text-align:left}.r{text-align:right}.demo{border:2px dashed #b3261e;color:#b3261e;padding:8px 12px;margin:14px 0;font-weight:bold}small{color:#777}</style>
+  <div class="demo">DEMO INVOICE. Not a tax invoice. GSTIN, HSN codes and tax rates must be configured before real invoices are issued.</div>
+  <h1>${esc(db.settings.storeName)}</h1><p>${esc(db.settings.address)}<br>GSTIN: ${esc(db.settings.gstin || "[not configured]")}</p>
+  <p><b>Invoice for order ${esc(o.id)}</b><br>Date: ${fmtD(o.createdAt)}<br>Payment: ${esc(o.payment.method)} · ${esc(o.payment.ref || "–")}</p>
+  <p><b>Bill to</b><br>${esc(o.customerName)}<br>${esc(o.address.line)}, ${esc(o.address.city)}, ${esc(o.address.state)} ${esc(o.address.pin)}</p>
+  <table><tr><th>Item</th><th>SKU</th><th class="r">Qty</th><th class="r">Price</th><th class="r">Amount</th></tr>${o.items.map(x => `<tr><td>${esc(x.name)}${x.variant ? " · " + esc(x.variant) : ""}</td><td>${esc(x.sku || x.pid)}</td><td class="r">${x.qty}</td><td class="r">${rs(x.price)}</td><td class="r">${rs(x.qty * x.price)}</td></tr>`).join("")}
+  <tr><td colspan="4" class="r">Subtotal</td><td class="r">${rs(o.subtotal)}</td></tr>${o.discount ? `<tr><td colspan="4" class="r">Discount (${esc(o.coupon)})</td><td class="r">− ${rs(o.discount)}</td></tr>` : ""}<tr><td colspan="4" class="r">Shipping</td><td class="r">Free</td></tr><tr><td colspan="4" class="r"><b>Total</b></td><td class="r"><b>${rs(o.total)}</b></td></tr></table><small>Tax breakdown will appear here once GST is configured.</small><script>print()<\/script>`);
+  w.document.close();
+}
+
+/* products */
+const PFIELDS = [["name", "Product name", "text", 1], ["sku", "SKU", "text", 1], ["category", "Category", "text"], ["fabric", "Fabric", "text"], ["pattern", "Pattern", "text"], ["embroidery", "Embroidery details", "text"], ["components", "Included components", "text", 0, 1], ["top", "Top fabric and length", "text"], ["bottom", "Bottom fabric and length", "text"], ["dupatta", "Dupatta details and length", "text"], ["care", "Care instructions", "text"], ["desc", "Description", "textarea", 0, 1], ["price", "Selling price (₹)", "number", 1], ["mrp", "MRP (₹, optional)", "number"], ["gst", "GST rate %", "select:|5|12|18"], ["stock", "Stock quantity", "number"], ["threshold", "Low-stock alert at", "number"], ["status", "Status", "select:published|draft|scheduled|archived"], ["launchAt", "Launch date (scheduled)", "datetime-local"], ["video", "Video link", "url"], ["shipping", "Shipping information", "text", 0, 1], ["returnable", "Return or exchange", "select:|yes|no"], ["seoTitle", "SEO title", "text", 0, 1], ["seoDesc", "SEO description", "textarea", 0, 1], ["tags", "Tags (comma separated)", "text", 0, 1]];
+VIEWS.products = function (p) {
+  const s = (p.q || "").toLowerCase(), f = p.f || "all", col = p.col || "";
+  const list = db.products.filter(x => (!s || (x.name + " " + x.sku + " " + x.id + " " + x.fabric).toLowerCase().includes(s)) && (!col || x.collections.includes(col)) && (f === "all" || (f === "unverified" ? x.real && !x.verified : f === "demo" ? !x.real : x.status === f)));
+  $("#main").innerHTML = `<div class="phead"><div><h1>Products</h1><p>${list.length} of ${db.products.length} · ${db.products.filter(x => x.real).length} live catalogue products, ${db.products.filter(x => !x.real).length} demo products</p></div>
+  <div class="tools"><input id="pq" class="btn" style="text-transform:none;letter-spacing:0;min-width:200px;cursor:text" placeholder="Search name, SKU, fabric" value="${esc(p.q || "")}" aria-label="Search products"><button class="btn" data-act="bulk-price">Bulk price</button><label class="btn" style="cursor:pointer">Import CSV<input type="file" accept=".csv,text/csv" id="csvIn" hidden></label><button class="btn" data-act="export-products-csv">Export CSV</button><button class="btn" data-act="export-products">Export Excel</button><button class="btn pri" data-act="new-product">Add product</button></div></div>
+  <div class="chips" style="margin-bottom:10px">${[["all", "All"], ["published", "Published"], ["draft", "Drafts"], ["scheduled", "Scheduled"], ["archived", "Archived"], ["unverified", "Unverified details"], ["demo", "Demo products"]].map(([v, l]) => `<button class="chip" data-pf="${v}" aria-pressed="${f === v}">${l}</button>`).join("")}
+    <select class="chip" id="pcol" aria-label="Collection"><option value="">All collections</option>${db.collections.map(c => `<option value="${c.id}" ${col === c.id ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></div>
+  <div class="tbl-wrap"><table><thead><tr class="static"><th><input type="checkbox" id="pall" aria-label="Select all"></th><th></th><th>Product</th><th class="hide-m">Collection</th><th class="r">Price</th><th>Stock</th><th>Status</th><th class="hide-m">Details</th></tr></thead><tbody>
+  ${list.map(x => `<tr data-prod="${x.id}"><td><input type="checkbox" class="psel" value="${x.id}" aria-label="Select ${esc(x.name)}"></td><td>${thumb(x)}</td><td class="wrap-cell"><b>${esc(x.name)}</b><span class="sub">${esc(x.sku)} · ${esc(x.fabric)}</span></td><td class="hide-m">${x.collections.map(c => esc(D.COLS[c] || c)).join(", ")}</td><td class="r num">${rs(x.price)}${x.mrp ? `<span class="sub">MRP ${rs(x.mrp)}</span>` : ""}</td><td>${stockBadge(x)}</td><td><span class="badge ${x.status === "published" ? "b-ok" : x.status === "draft" ? "b-mute" : x.status === "scheduled" ? "b-info" : "b-mute"}">${esc(x.status)}</span></td><td class="hide-m">${x.real ? (x.verified ? '<span class="badge b-ok">Verified</span>' : '<span class="badge b-warn">To verify</span>') : '<span class="badge b-mute">Demo</span>'}</td></tr>`).join("") || '<tr class="static"><td colspan="8" class="empty">No products match.</td></tr>'}
+  </tbody></table></div>`;
+  $("#pq").addEventListener("change", e => go("products", Object.assign({}, p, {q: e.target.value})));
+  $("#pcol").addEventListener("change", e => go("products", Object.assign({}, p, {col: e.target.value})));
+  $$("[data-pf]").forEach(b => b.addEventListener("click", () => go("products", Object.assign({}, p, {f: b.dataset.pf}))));
+  $("#pall").addEventListener("change", e => $$(".psel").forEach(c => c.checked = e.target.checked));
+  $$("[data-prod]").forEach(r => r.addEventListener("click", e => { if (e.target.closest("button,input,a,label")) return; openProduct(r.dataset.prod); }));
+  $("#csvIn").addEventListener("change", e => importCSV(e.target.files[0]));
+  if (p.open) openProduct(p.open);
+};
+let editImages = [];
+function openProduct(id) {
+  const x = id ? P(id) : null, isNew = !x;
+  const v = x || {id: "DM-" + (++db.seq.product + 100), sku: "", name: "", collections: [], category: "Unstitched suit set", desc: "", fabric: "", colours: [], variants: [], pattern: "", embroidery: "", components: "", top: "", bottom: "", dupatta: "", occasions: [], care: "Dry clean", price: "", mrp: "", gst: "", stock: 0, threshold: db.settings.lowStockDefault, status: "draft", launchAt: "", images: [], video: "", shipping: "Free shipping across India", returnable: null, seoTitle: "", seoDesc: "", tags: [], real: false, verified: false};
+  editImages = v.images.slice();
+  const fieldHtml = ([k, l, t, req, full]) => {
+    let val = v[k]; if (k === "tags") val = (v.tags || []).join(", "); if (k === "returnable") val = v.returnable == null ? "" : v.returnable ? "yes" : "no"; if (k === "launchAt" && val) val = val.slice(0, 16);
+    const inp = t === "textarea" ? `<textarea id="f-${k}">${esc(val)}</textarea>` : t.startsWith("select:") ? `<select id="f-${k}">${t.slice(7).split("|").map(o => `<option value="${o}" ${String(val ?? "") === o ? "selected" : ""}>${o || "Not set"}</option>`).join("")}</select>` : `<input id="f-${k}" type="${t}" value="${esc(val ?? "")}" ${t === "number" ? 'min="0" step="1" inputmode="numeric"' : ""}>`;
+    return `<div class="field ${full ? "full" : ""}" data-f="${k}"><label for="f-${k}">${l}${req ? " *" : ""}</label>${inp}</div>`;
+  };
+  const body = `${x && x.real && !x.verified ? '<div class="note">This is a live catalogue product. Its price and details are samples written from photos. Check them, then tick "Details verified".</div>' : ""}${x && !x.real ? '<div class="note info">Demo product (fictional).</div>' : ""}
+  <form class="form" id="pform" novalidate>
+    ${PFIELDS.slice(0, 2).map(fieldHtml).join("")}
+    <div class="field full"><span>Collections</span><div class="chips">${db.collections.map(c => `<label class="chip"><input type="checkbox" name="col" value="${c.id}" ${v.collections.includes(c.id) ? "checked" : ""}> ${esc(c.name)}</label>`).join("")}</div></div>
+    <div class="field full"><span>Colours</span><div class="chips">${Object.entries(D.COLOURS).map(([k, [l, h]]) => `<label class="chip"><input type="checkbox" name="colour" value="${k}" ${v.colours.includes(k) ? "checked" : ""}><i class="swatch" style="background:${h}"></i>${l}</label>`).join("")}</div></div>
+    <div class="field full"><span>Occasions</span><div class="chips">${["haldi", "mehendi", "sangeet", "cocktail", "wedding", "reception", "festive", "everyday", "office", "gifting"].map(o => `<label class="chip"><input type="checkbox" name="occ" value="${o}" ${v.occasions.includes(o) ? "checked" : ""}> ${o[0].toUpperCase() + o.slice(1)}</label>`).join("")}</div></div>
+    <h3>Product details</h3>${PFIELDS.slice(2, 12).map(fieldHtml).join("")}
+    <h3>Price, tax and stock</h3>${PFIELDS.slice(12, 19).map(fieldHtml).join("")}
+    <h3>Photos and video</h3><div class="field full"><div class="imgs" id="imgs"></div><label class="btn sm" style="width:max-content;cursor:pointer">Upload photos<input type="file" id="imgIn" accept="image/jpeg,image/png,image/webp" multiple hidden></label><small>JPG, PNG or WebP, up to 5 MB each. Photos are resized to 800 px. In the demo they are kept in this browser only.</small></div>${fieldHtml(PFIELDS[19])}
+    <h3>Shipping, returns and search</h3>${PFIELDS.slice(20).map(fieldHtml).join("")}
+    ${x && x.real ? `<label class="chip full" style="width:max-content"><input type="checkbox" id="f-verified" ${v.verified ? "checked" : ""}> Details verified by Label Anant</label>` : ""}
+    <p class="ferr full" id="perr" role="alert"></p>
+  </form>
+  ${x ? `<div class="card"><h2>Stock history</h2><ul class="timeline">${db.ledger.filter(l => l.pid === x.id).slice(-8).reverse().map(l => `<li><b class="num">${l.change > 0 ? "+" : ""}${l.change}</b> · ${esc(l.reason)}<small>${fmtDT(l.at)} · ${esc(l.by)}</small></li>`).join("") || "<li>No movements</li>"}</ul></div>` : ""}`;
+  drawer(isNew ? "Add product" : x.name, body, `${x ? `<a class="btn" href="../index.html?demo=1#p-${x.id.toLowerCase()}" target="_blank" rel="noopener">View in demo shop</a>` : ""}<button class="btn" data-act="close">Cancel</button><button class="btn pri" data-saveprod="${isNew ? "" : x.id}" data-newid="${v.id}">${isNew ? "Add product" : "Save changes"}</button>`);
+  drawImgs();
+  $("#imgIn").addEventListener("change", e => addImages(e.target.files));
+}
+function drawImgs() { const el = $("#imgs"); if (el) el.innerHTML = editImages.map((s, i) => `<figure><img src="${esc(img(s))}" alt=""><button type="button" data-rmimg="${i}" aria-label="Remove photo">×</button></figure>`).join("") || '<span style="color:var(--mute);font-size:13px">No photos yet</span>'; }
+function addImages(files) {
+  [...files].slice(0, 6 - editImages.length).forEach(f => {
+    if (!/^image\/(jpeg|png|webp)$/.test(f.type)) return toast(f.name + ": only JPG, PNG or WebP");
+    if (f.size > 5 * 1024 * 1024) return toast(f.name + " is larger than 5 MB");
+    const r = new FileReader(); r.onload = () => { const im = new Image(); im.onload = () => { const s = Math.min(1, 800 / Math.max(im.width, im.height)); const c = document.createElement("canvas"); c.width = im.width * s | 0; c.height = im.height * s | 0; c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); editImages.push(c.toDataURL("image/jpeg", .82)); drawImgs(); }; im.onerror = () => toast(f.name + " could not be read"); im.src = r.result; }; r.readAsDataURL(f);
+  });
+}
+function saveProduct(existingId, newId) {
+  const g = k => { const el = $("#f-" + k); return el ? el.value.trim() : ""; };
+  $$("#pform .field").forEach(f => f.classList.remove("bad"));
+  const errs = [];
+  const bad = (k, m) => { const f = $(`[data-f="${k}"]`); if (f) f.classList.add("bad"); errs.push(m); };
+  const name = g("name"), sku = g("sku").toUpperCase(), price = Number(g("price")), stock = g("stock") === "" ? null : Number(g("stock")), mrp = g("mrp") === "" ? null : Number(g("mrp")), thr = Number(g("threshold") || 0);
+  if (name.length < 3) bad("name", "Enter a product name");
+  if (!/^[A-Z0-9-]{3,30}$/.test(sku)) bad("sku", "SKU: 3–30 letters, numbers or dashes");
+  else if (db.products.find(p => p.sku === sku && p.id !== existingId)) bad("sku", "This SKU is already used");
+  if (!Number.isInteger(price) || price <= 0) bad("price", "Enter a price in whole rupees");
+  if (mrp != null && (!Number.isInteger(mrp) || mrp < price)) bad("mrp", "MRP must be a whole number not lower than the price");
+  if (stock != null && (!Number.isInteger(stock) || stock < 0)) bad("stock", "Stock must be 0 or more");
+  if (!Number.isInteger(thr) || thr < 0) bad("threshold", "Alert level must be 0 or more");
+  const status = g("status"); if (status === "scheduled" && !g("launchAt")) bad("launchAt", "Choose a launch date for a scheduled product");
+  const cols = $$('#pform input[name=col]:checked').map(i => i.value); if (!cols.length) errs.push("Choose at least one collection");
+  if (g("video") && !/^https:\/\//.test(g("video"))) bad("video", "Video link must start with https://");
+  if (errs.length) { $("#perr").textContent = errs.join(". ") + "."; return; }
+  const p = existingId ? P(existingId) : {id: newId, real: false, verified: false, createdAt: new Date().toISOString(), n: 0, f: null, placeholder: "#C9A24E", variants: []};
+  const before = {price: p.price, stock: p.stock};
+  Object.assign(p, {name, sku, price, mrp, collections: cols, colours: $$('#pform input[name=colour]:checked').map(i => i.value), occasions: $$('#pform input[name=occ]:checked').map(i => i.value),
+    category: g("category"), fabric: g("fabric"), pattern: g("pattern"), embroidery: g("embroidery"), components: g("components"), top: g("top"), bottom: g("bottom"), dupatta: g("dupatta"), care: g("care"), desc: g("desc"),
+    gst: g("gst") ? Number(g("gst")) : null, threshold: thr, status, launchAt: g("launchAt") ? new Date(g("launchAt")).toISOString() : null, video: g("video"), shipping: g("shipping"), returnable: g("returnable") === "" ? null : g("returnable") === "yes",
+    seoTitle: g("seoTitle"), seoDesc: g("seoDesc"), tags: g("tags").split(",").map(t => t.trim()).filter(Boolean), images: editImages.slice()});
+  if ($("#f-verified")) p.verified = $("#f-verified").checked;
+  if (!existingId) { p.stock = 0; db.products.unshift(p); if (stock) D.adjustStock(db, p.id, stock, "Opening stock", "Owner"); D.log(db, "Owner", "Added product", p.id); }
+  else { if (stock != null && stock !== before.stock) D.adjustStock(db, p.id, stock - (before.stock || 0), "Stock count corrected in product editor", "Owner"); if (before.price !== price) D.log(db, "Owner", `Price changed ${rs(before.price)} → ${rs(price)}`, p.id); D.log(db, "Owner", "Edited product", p.id); }
+  save(); closeAll(); toast(existingId ? "Product saved" : "Product added"); VIEWS.products(q());
+}
+function bulkPrice() {
+  const ids = $$(".psel:checked").map(c => c.value);
+  if (!ids.length) return toast("Tick the products to change first");
+  modal(`<h2>Change price of ${ids.length} product${ids.length > 1 ? "s" : ""}</h2><div class="form"><div class="field"><label for="bm">Change by</label><select id="bm"><option value="pct">Percent</option><option value="amt">Rupees</option><option value="set">Set exact price</option></select></div><div class="field"><label for="bv">Value</label><input id="bv" type="number" step="1" placeholder="e.g. 10 or -10"></div><p class="ferr full" id="berr"></p></div><p style="color:var(--soft);font-size:13px">Prices are rounded to the nearest ₹10.</p><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn pri" data-bulk="${ids.join(",")}">Apply</button></div>`);
+}
+
+/* inventory */
+VIEWS.inventory = function (p) {
+  const f = p.f || "all", s = (p.q || "").toLowerCase();
+  const sold60 = id => -db.ledger.filter(l => l.pid === id && l.change < 0 && /^(Order|Reserved)/.test(l.reason) && Date.now() - Date.parse(l.at) < 60 * 864e5).reduce((a, l) => a + l.change, 0);
+  const lastSale = id => { const l = db.ledger.filter(x => x.pid === id && x.change < 0 && /^(Order|Reserved)/.test(x.reason)).pop(); return l ? l.at : null; };
+  const pub = db.products.filter(x => x.status !== "archived");
+  const list = pub.filter(x => (!s || (x.name + x.sku).toLowerCase().includes(s)) && (f === "all" || (f === "out" ? x.stock === 0 && x.status === "published" : f === "low" ? x.stock > 0 && x.stock <= (x.threshold ?? db.settings.lowStockDefault) : f === "slow" ? x.status === "published" && sold60(x.id) === 0 : true)));
+  const units = pub.reduce((a, x) => a + (x.stock || 0), 0), value = pub.reduce((a, x) => a + (x.stock || 0) * x.price, 0);
+  const notes = db.notifications.filter(n => !n.read);
+  $("#main").innerHTML = `<div class="phead"><div><h1>Inventory</h1><p>Every change is recorded in the stock ledger. Stock goes down when an order is placed and comes back on cancellation, failed payment or return.</p></div><div class="tools"><button class="btn" data-act="export-ledger">Export ledger</button><button class="btn" data-act="export-stock">Export stock</button></div></div>
+  <div class="kpis"><div class="kpi na"><span>Units in stock</span><b class="num">${fmtN(units)}</b></div><div class="kpi na"><span>Stock value at selling price</span><b class="num">${rs(value)}</b><small>Add cost prices for cost value</small></div><button class="kpi" data-if="low"><span>Low stock</span><b>${pub.filter(x => x.stock > 0 && x.stock <= (x.threshold ?? db.settings.lowStockDefault)).length}</b></button><button class="kpi hot" data-if="out"><span>Out of stock</span><b>${pub.filter(x => x.stock === 0 && x.status === "published").length}</b></button><button class="kpi" data-if="slow"><span>No sales in 60 days</span><b>${pub.filter(x => x.status === "published" && sold60(x.id) === 0).length}</b></button></div>
+  ${notes.length ? `<div class="card" style="margin-bottom:16px"><h2>Stock alerts <small>${notes.length} unread</small></h2>${notes.slice(0, 6).map(n => `<div style="display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span>${n.type === "out_of_stock" ? '<span class="badge b-bad">Out</span>' : '<span class="badge b-warn">Low</span>'} ${esc(n.text)}<span class="sub" style="display:block;color:var(--mute);font-size:12px">${ago(n.at)}</span></span><span style="display:flex;gap:6px"><button class="btn sm" data-adj="${n.pid}">Restock</button><button class="btn sm" data-read="${n.id}">Dismiss</button></span></div>`).join("")}</div>` : ""}
+  <div class="chips" style="margin-bottom:10px">${[["all", "All"], ["low", "Low"], ["out", "Out of stock"], ["slow", "Slow moving"]].map(([v, l]) => `<button class="chip" data-if="${v}" aria-pressed="${f === v}">${l}</button>`).join("")}<input id="iq" class="chip" placeholder="Search" value="${esc(p.q || "")}" aria-label="Search stock"></div>
+  <div class="tbl-wrap"><table><thead><tr class="static"><th></th><th>Product</th><th>Stock</th><th class="r">Alert at</th><th class="r">Sold 60 d</th><th class="hide-m">Last sale</th><th class="r hide-m">Value</th><th></th></tr></thead><tbody>
+  ${list.map(x => `<tr data-prod="${x.id}"><td>${thumb(x)}</td><td class="wrap-cell"><b>${esc(x.name)}</b><span class="sub">${esc(x.sku)}</span></td><td>${stockBadge(x)}</td><td class="r num">${x.threshold ?? db.settings.lowStockDefault}</td><td class="r num">${sold60(x.id)}</td><td class="hide-m">${lastSale(x.id) ? ago(lastSale(x.id)) : "–"}</td><td class="r num hide-m">${rs((x.stock || 0) * x.price)}</td><td><button class="btn sm" data-adj="${x.id}">Adjust</button></td></tr>`).join("") || '<tr class="static"><td colspan="8" class="empty">Nothing here.</td></tr>'}
+  </tbody></table></div>
+  <div class="card" style="margin-top:16px"><h2>Recent stock movements</h2><div class="tbl-wrap" style="border:0"><table><thead><tr class="static"><th>When</th><th>Product</th><th class="r">Change</th><th>Reason</th><th class="hide-m">By</th></tr></thead><tbody>${db.ledger.slice(-12).reverse().map(l => `<tr class="static"><td>${fmtDT(l.at)}</td><td>${esc((P(l.pid) || {name: l.pid}).name)}</td><td class="r num" style="color:${l.change < 0 ? "var(--bad)" : "var(--ok)"}">${l.change > 0 ? "+" : ""}${l.change}</td><td>${esc(l.reason)}</td><td class="hide-m">${esc(l.by)}</td></tr>`).join("")}</tbody></table></div></div>`;
+  $$("[data-if]").forEach(b => b.addEventListener("click", () => go("inventory", Object.assign({}, p, {f: b.dataset.if}))));
+  $("#iq").addEventListener("change", e => go("inventory", Object.assign({}, p, {q: e.target.value})));
+  $$("[data-prod]").forEach(r => r.addEventListener("click", e => { if (e.target.closest("button,input,a,label")) return; openProduct(r.dataset.prod); }));
+};
+function adjustModal(pid) {
+  const x = P(pid);
+  modal(`<h2>Adjust stock</h2><p style="margin:0 0 12px">${esc(x.name)} · now <b>${x.stock ?? 0}</b> in stock</p><div class="form"><div class="field"><label for="aq">Change (+ add, − remove)</label><input id="aq" type="number" step="1" placeholder="e.g. 10 or -1"></div><div class="field"><label for="ar">Reason</label><select id="ar"><option>New stock received</option><option>Stock count correction</option><option>Damaged or defective</option><option>Returned to supplier</option><option>Used as sample</option></select></div><div class="field full"><label for="an">Note (optional)</label><input id="an"></div><p class="ferr full" id="aerr"></p></div><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn pri" data-doadj="${esc(pid)}">Save</button></div>`);
+}
+
+/* customers */
+VIEWS.customers = function (p) {
+  if (p.tab === "tickets") return ticketsView(p);
+  const seg = p.seg || "", s = (p.q || "").toLowerCase();
+  const rows = db.customers.map(c => Object.assign({c}, D.segmentOf(db, c))).filter(r => (!seg || r.tags.includes(seg)) && (!s || (r.c.name + r.c.phone + r.c.city + r.c.email).toLowerCase().includes(s))).sort((a, b) => b.value - a.value);
+  $("#main").innerHTML = `<div class="phead"><div><h1>Customers</h1><p>${rows.length} customers${seg ? " · " + D.SEGMENTS[seg] : ""}. Marketing goes only to customers who opted in.</p></div><div class="tools"><input id="cq" class="btn" style="text-transform:none;letter-spacing:0;min-width:200px;cursor:text" placeholder="Search name, phone, city" value="${esc(p.q || "")}" aria-label="Search customers"><button class="btn" data-act="export-customers">Export Excel</button></div></div>
+  <div class="mtabs"><button class="mtab" aria-selected="true">Customers</button><button class="mtab" data-go="customers?tab=tickets">Support issues <span class="badge b-warn" style="margin-left:6px">${db.tickets.filter(t => t.status === "open").length} open</span></button></div>
+  <div class="chips" style="margin-bottom:12px"><button class="chip" data-seg="" aria-pressed="${!seg}">All</button>${Object.entries(D.SEGMENTS).map(([k, l]) => `<button class="chip" data-seg="${k}" aria-pressed="${seg === k}">${l}<span class="n">${db.customers.filter(c => D.segmentOf(db, c).tags.includes(k)).length}</span></button>`).join("")}</div>
+  <div class="tbl-wrap"><table><thead><tr class="static"><th>Customer</th><th class="hide-m">Phone</th><th>City</th><th class="r">Orders</th><th class="r">Total spent</th><th class="hide-m">Last order</th><th class="hide-m">Consent</th></tr></thead><tbody>
+  ${rows.map(r => `<tr data-cust="${r.c.id}"><td><b>${esc(r.c.name)}</b><span class="sub">${r.tags.filter(t => ["repeat", "highvalue", "new"].includes(t)).map(t => ({repeat: "Repeat", highvalue: "High value", new: "New"})[t]).join(" · ")}</span></td><td class="hide-m num">${esc(maskPhone(r.c.phone))}</td><td>${esc(r.c.city)}</td><td class="r num">${r.orders}</td><td class="r num">${rs(r.value)}</td><td class="hide-m">${r.last ? ago(r.last) : "–"}</td><td class="hide-m">${r.c.consent.whatsapp ? '<span class="badge b-ok">WhatsApp</span> ' : ""}${r.c.consent.email ? '<span class="badge b-info">Email</span>' : ""}${!r.c.consent.whatsapp && !r.c.consent.email ? '<span class="badge b-mute">None</span>' : ""}</td></tr>`).join("") || '<tr class="static"><td colspan="7" class="empty">No customers match.</td></tr>'}
+  </tbody></table></div>`;
+  $("#cq").addEventListener("change", e => go("customers", Object.assign({}, p, {q: e.target.value})));
+  $$("[data-seg]").forEach(b => b.addEventListener("click", () => go("customers", Object.assign({}, p, {seg: b.dataset.seg}))));
+};
+function openCustomer(id) {
+  const c = C(id), sg = D.segmentOf(db, c), os = db.orders.filter(o => o.customerId === id), tk = db.tickets.filter(t => t.customerId === id);
+  drawer(c.name, `${c.demo ? '<div class="note">Demo customer (fictional).</div>' : ""}<div class="kpis" style="margin:0"><div class="kpi na"><span>Orders</span><b>${sg.orders}</b></div><div class="kpi na"><span>Total spent</span><b>${rs(sg.value)}</b></div><div class="kpi na"><span>Last order</span><b style="font-size:18px">${sg.last ? fmtD(sg.last) : "–"}</b></div></div>
+    <div class="card"><h2>Contact</h2><dl class="kv"><dt>Phone</dt><dd>${esc(maskPhone(c.phone))}</dd><dt>Email</dt><dd>${esc(c.email || "–")}</dd><dt>City</dt><dd>${esc(c.city)}, ${esc(c.state)}</dd><dt>Customer since</dt><dd>${fmtD(c.createdAt)}</dd><dt>Segments</dt><dd>${sg.tags.map(t => `<span class="badge b-rani">${esc(D.SEGMENTS[t] || t)}</span>`).join(" ") || "–"}</dd></dl></div>
+    <div class="card"><h2>Marketing consent</h2><label class="chip"><input type="checkbox" data-consent="whatsapp" ${c.consent.whatsapp ? "checked" : ""}> WhatsApp updates</label> <label class="chip"><input type="checkbox" data-consent="email" ${c.consent.email ? "checked" : ""}> Email updates</label><p style="color:var(--mute);font-size:12.5px;margin:8px 0 0">Last changed ${fmtDT(c.consent.at)}. Change only when the customer asks; every change is logged.</p></div>
+    <div class="card"><h2>Addresses</h2>${c.addresses.map(a => `<p style="margin:0 0 6px">${esc(a.line)}, ${esc(a.city)}, ${esc(a.state)} ${esc(a.pin)}</p>`).join("") || "–"}</div>
+    <div class="card"><h2>Orders</h2>${os.map(o => `<p style="margin:0 0 6px;display:flex;justify-content:space-between;gap:8px"><button class="lk" data-oopen="${o.id}">${o.id}</button><span>${fmtD(o.createdAt)}</span><span class="num">${rs(o.total)}</span>${sBadge(o.status)}</p>`).join("") || "No orders"}</div>
+    <div class="card"><h2>Support history</h2>${tk.map(t => `<p style="margin:0 0 6px">${t.status === "open" ? '<span class="badge b-warn">Open</span>' : '<span class="badge b-ok">Resolved</span>'} ${esc(t.subject)} <span style="color:var(--mute)">· ${fmtD(t.createdAt)}</span></p>`).join("") || "No issues"}</div>
+    <div class="card"><h2>Notes</h2><div class="field"><textarea id="cnote" aria-label="Customer notes">${esc(c.notes)}</textarea></div><button class="btn sm" style="margin-top:8px" data-savecnote="${id}">Save note</button></div>`, "");
+  $$("[data-consent]").forEach(cb => cb.addEventListener("change", () => { c.consent[cb.dataset.consent] = cb.checked; c.consent.at = new Date().toISOString(); D.log(db, "Owner", `Consent ${cb.dataset.consent} ${cb.checked ? "on" : "off"}`, id); save(); toast("Consent updated"); }));
+}
+function ticketsView(p) {
+  const f = p.ts || "open";
+  const list = db.tickets.filter(t => f === "all" || t.status === f);
+  $("#main").innerHTML = `<div class="phead"><div><h1>Customers</h1><p>Support issues raised on WhatsApp or by phone.</p></div><div class="tools"><button class="btn pri" data-act="new-ticket">Log an issue</button></div></div>
+  <div class="mtabs"><button class="mtab" data-go="customers">Customers</button><button class="mtab" aria-selected="true">Support issues</button></div>
+  <div class="chips" style="margin-bottom:12px">${[["open", "Open"], ["resolved", "Resolved"], ["all", "All"]].map(([v, l]) => `<button class="chip" data-ts="${v}" aria-pressed="${f === v}">${l}</button>`).join("")}</div>
+  <div class="tbl-wrap"><table><thead><tr class="static"><th>Issue</th><th>Customer</th><th class="hide-m">Order</th><th>Raised</th><th>Status</th><th></th></tr></thead><tbody>${list.map(t => `<tr class="static"><td class="wrap-cell"><b>${esc(t.subject)}</b><span class="sub">${esc(t.id)}</span></td><td><button class="lk" data-cust="${t.customerId}">${esc((C(t.customerId) || {}).name)}</button></td><td class="hide-m">${t.orderId ? `<button class="lk" data-oopen="${t.orderId}">${t.orderId}</button>` : "–"}</td><td>${ago(t.createdAt)}</td><td>${t.status === "open" ? '<span class="badge b-warn">Open</span>' : '<span class="badge b-ok">Resolved</span>'}</td><td>${t.status === "open" ? `<button class="btn sm" data-resolve="${t.id}">Resolve</button>` : ""}</td></tr>`).join("") || '<tr class="static"><td colspan="6" class="empty">No issues here.</td></tr>'}</tbody></table></div>`;
+  $$("[data-ts]").forEach(b => b.addEventListener("click", () => go("customers", {tab: "tickets", ts: b.dataset.ts})));
+}
+
+/* marketing */
+VIEWS.marketing = function (p) {
+  const tab = p.tab || "campaigns";
+  const tabs = [["campaigns", "Campaigns"], ["coupons", "Coupons"], ["store", "Homepage and announcement"], ["consent", "Subscribers"]];
+  let html = `<div class="phead"><div><h1>Marketing</h1><p>Messages go only to customers who opted in, and every campaign needs your approval before it is sent.</p></div></div><div class="mtabs">${tabs.map(([v, l]) => `<button class="mtab" data-go="marketing?tab=${v}" aria-selected="${tab === v}">${l}</button>`).join("")}</div>`;
+  if (tab === "campaigns") {
+    html += `<div class="tools" style="margin-bottom:12px"><button class="btn pri" data-act="new-campaign">New campaign</button></div><div class="note info" style="margin-bottom:12px">Sending is simulated. Real WhatsApp messages need the WhatsApp Business Platform with approved templates; email needs a sending service.</div>
+    <div class="tbl-wrap"><table><thead><tr class="static"><th>Campaign</th><th>Channel</th><th>Audience</th><th>Status</th><th class="r hide-m">Delivered</th><th class="r hide-m">Orders</th><th class="r hide-m">Revenue</th><th></th></tr></thead><tbody>${db.campaigns.map(c => `<tr class="static"><td class="wrap-cell"><b>${esc(c.name)}</b><span class="sub">${esc(c.message.slice(0, 70))}${c.message.length > 70 ? "…" : ""}</span></td><td>${esc(c.channel)}</td><td>${esc(D.SEGMENTS[c.segment] || c.segment)}<span class="sub">${D.audience(db, c.segment).filter(x => c.channel === "WhatsApp" ? x.consent.whatsapp : x.consent.email).length} opted in</span></td><td><span class="badge ${c.status === "sent" ? "b-ok" : c.status === "approved" ? "b-info" : c.status === "pending_approval" ? "b-warn" : "b-mute"}">${esc({draft: "Draft", pending_approval: "Waiting approval", approved: "Approved", sent: "Sent"}[c.status])}</span></td><td class="r num hide-m">${c.status === "sent" ? c.delivered + " / " + c.recipients : "–"}</td><td class="r num hide-m">${c.status === "sent" ? c.orders : "–"}</td><td class="r num hide-m">${c.status === "sent" ? rs(c.revenue) : "–"}</td><td>${c.status === "draft" ? `<button class="btn sm" data-camp="submit" data-cid="${c.id}">Submit for approval</button>` : c.status === "pending_approval" ? `<button class="btn sm pri" data-camp="approve" data-cid="${c.id}">Approve</button>` : c.status === "approved" ? `<button class="btn sm pri" data-camp="send" data-cid="${c.id}">Send (demo)</button>` : ""}</td></tr>`).join("")}</tbody></table></div>`;
+  } else if (tab === "coupons") {
+    html += `<div class="tools" style="margin-bottom:12px"><button class="btn pri" data-act="new-coupon">New coupon</button></div><div class="tbl-wrap"><table><thead><tr class="static"><th>Code</th><th>Offer</th><th class="r">Min order</th><th>Expires</th><th class="r">Used</th><th>Status</th><th></th></tr></thead><tbody>${db.coupons.map(c => { const exp = c.expires && Date.parse(c.expires) < Date.now(); return `<tr class="static"><td><b>${esc(c.code)}</b><span class="sub">${esc(c.note || "")}</span></td><td>${c.type === "percent" ? c.value + "% off" : rs(c.value) + " off"}</td><td class="r num">${rs(c.minOrder)}</td><td>${fmtD(c.expires)}</td><td class="r num">${c.used}${c.limit ? " / " + c.limit : ""}</td><td>${exp ? '<span class="badge b-mute">Expired</span>' : c.active ? '<span class="badge b-ok">Active</span>' : '<span class="badge b-mute">Off</span>'}</td><td>${!exp ? `<button class="btn sm" data-toggle-coupon="${esc(c.code)}">${c.active ? "Turn off" : "Turn on"}</button>` : ""}</td></tr>`; }).join("")}</tbody></table></div><p style="color:var(--soft);font-size:13px">Active coupons work at checkout in the demo shop. Try WELCOME10 on an order over ₹2,000.</p>`;
+  } else if (tab === "store") {
+    html += `<div class="grid g2"><div class="card"><h2>Announcement bar</h2><p style="color:var(--soft);font-size:13.5px;margin-top:0">Rotating messages at the top of the shop. Only publish promises you can keep.</p>${db.settings.announcements.map((a, i) => `<div class="field" style="margin-bottom:8px"><label for="an${i}">Message ${i + 1}</label><input id="an${i}" value="${esc(a)}" maxlength="90"></div>`).join("")}<button class="btn pri" data-act="save-ann">Save messages</button></div>
+    <div class="card"><h2>Homepage</h2><div class="field"><label for="hc">Collection shown first in "Trending now"</label><select id="hc">${db.collections.map(c => `<option value="${c.id}" ${db.settings.homeCollection === c.id ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></div><h3 style="font-size:17px;margin:16px 0 8px">Collections</h3>${db.collections.map(c => `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)"><span>${esc(c.name)}<span class="sub" style="display:block;color:var(--mute);font-size:12px">${db.products.filter(p => p.collections.includes(c.id) && p.status === "published").length} published · ${c.real ? "live" : "demo only"}</span></span><label class="chip"><input type="checkbox" data-colfeat="${c.id}" ${c.featured ? "checked" : ""}> Featured</label></div>`).join("")}<button class="btn pri" style="margin-top:12px" data-act="save-home">Save homepage</button><p style="color:var(--soft);font-size:13px">Changes show in the demo shop: <a href="../index.html?demo=1" target="_blank" rel="noopener">open it</a>.</p></div></div>`;
+  } else {
+    const wa = db.customers.filter(c => c.consent.whatsapp).length, em = db.customers.filter(c => c.consent.email).length;
+    html += `<div class="kpis"><div class="kpi na"><span>WhatsApp opted in</span><b>${wa}</b><small>of ${db.customers.length} customers</small></div><div class="kpi na"><span>Email opted in</span><b>${em}</b></div><div class="kpi na"><span>Abandoned checkouts</span><b>${db.abandoned.length}</b><small>${db.abandoned.filter(a => a.consent).length} can be reminded (consented)</small></div></div>
+    <div class="card"><h2>Abandoned checkouts</h2><div class="tbl-wrap" style="border:0"><table><thead><tr class="static"><th>Customer</th><th>Suit</th><th class="r">Value</th><th>When</th><th>Reminder allowed</th></tr></thead><tbody>${db.abandoned.map(a => `<tr class="static"><td><button class="lk" data-cust="${a.customerId}">${esc((C(a.customerId) || {}).name)}</button></td><td>${esc(a.items[0].name)}</td><td class="r num">${rs(a.items[0].price)}</td><td>${ago(a.at)}</td><td>${a.consent ? '<span class="badge b-ok">Yes</span>' : '<span class="badge b-mute">No consent</span>'}</td></tr>`).join("")}</tbody></table></div></div>`;
+  }
+  $("#main").innerHTML = html;
+};
+
+/* reports */
+function salesRows(range) {
+  const paid = D.paidOrders(db).filter(o => D.inRange(o.createdAt, range));
+  const byDay = {}, byMonth = {}, byProd = {}, byCol = {}, byPay = {};
+  paid.forEach(o => {
+    const d = o.createdAt.slice(0, 10), m = o.createdAt.slice(0, 7);
+    [[byDay, d], [byMonth, m]].forEach(([t, k]) => { t[k] = t[k] || {orders: 0, gross: 0, discount: 0, net: 0}; t[k].orders++; t[k].gross += o.subtotal; t[k].discount += o.discount; t[k].net += o.total; });
+    byPay[o.payment.method] = byPay[o.payment.method] || {orders: 0, value: 0}; byPay[o.payment.method].orders++; byPay[o.payment.method].value += o.total;
+    o.items.forEach(it => { byProd[it.pid] = byProd[it.pid] || {units: 0, value: 0}; byProd[it.pid].units += it.qty; byProd[it.pid].value += it.qty * it.price; const p = P(it.pid); const c = p ? p.collections[0] : "other"; byCol[c] = byCol[c] || {units: 0, value: 0}; byCol[c].units += it.qty; byCol[c].value += it.qty * it.price; });
+  });
+  return {
+    daily: [["Date", "Orders", "Gross", "Discount", "Net"], ...Object.entries(byDay).sort().map(([k, v]) => [k, v.orders, v.gross, v.discount, v.net])],
+    monthly: [["Month", "Orders", "Gross", "Discount", "Net"], ...Object.entries(byMonth).sort().map(([k, v]) => [k, v.orders, v.gross, v.discount, v.net])],
+    product: [["Product", "SKU", "Units", "Revenue"], ...Object.entries(byProd).sort((a, b) => b[1].value - a[1].value).map(([k, v]) => [(P(k) || {name: k}).name, (P(k) || {sku: k}).sku, v.units, v.value])],
+    collection: [["Collection", "Units", "Revenue"], ...Object.entries(byCol).sort((a, b) => b[1].value - a[1].value).map(([k, v]) => [D.COLS[k] || k, v.units, v.value])],
+    payment: [["Payment method", "Orders", "Value"], ...Object.entries(byPay).map(([k, v]) => [k, v.orders, v.value])],
+    returns: [["Order", "Date", "Status", "Reason", "Refund"], ...db.orders.filter(o => o.returnReason || o.refund).map(o => [o.id, o.createdAt.slice(0, 10), D.STATUS[o.status], o.returnReason || "Cancelled", o.refund ? o.refund.amount + " (" + o.refund.status + ")" : ""])]
+  };
+}
+function invRows() {
+  return {
+    stock: [["Product", "SKU", "Status", "Stock", "Alert at", "Price", "Stock value"], ...db.products.map(p => [p.name, p.sku, p.status, p.stock ?? "", p.threshold ?? db.settings.lowStockDefault, p.price, (p.stock || 0) * p.price])],
+    ledger: [["Date", "Product", "SKU", "Change", "Reason", "By"], ...db.ledger.map(l => [l.at.slice(0, 16).replace("T", " "), (P(l.pid) || {name: l.pid}).name, (P(l.pid) || {sku: ""}).sku, l.change, l.reason, l.by])]
+  };
+}
+function custRows() {
+  const segs = db.customers.map(c => Object.assign({c}, D.segmentOf(db, c))), buyers = segs.filter(s => s.orders);
+  const avgOrders = buyers.reduce((a, s) => a + s.orders, 0) / Math.max(1, buyers.length), avgVal = buyers.reduce((a, s) => a + s.value, 0) / Math.max(1, buyers.reduce((a, s) => a + s.orders, 0));
+  return {summary: [["Measure", "Value"], ["Customers", db.customers.length], ["Customers who bought", buyers.length], ["Repeat customers (2+ orders)", buyers.filter(s => s.orders >= 2).length], ["Repeat rate", (buyers.filter(s => s.orders >= 2).length / Math.max(1, buyers.length) * 100).toFixed(1) + "%"], ["Average orders per buyer", avgOrders.toFixed(2)], ["Average order value", Math.round(avgVal)], ["Lifetime value estimate (average spent per buyer)", Math.round(avgOrders * avgVal)], ["WhatsApp opted in", db.customers.filter(c => c.consent.whatsapp).length]],
+    list: [["Customer", "City", "State", "Orders", "Total spent", "Last order", "WhatsApp consent", "Email consent"], ...segs.map(s => [s.c.name, s.c.city, s.c.state, s.orders, s.value, s.last ? new Date(s.last).toISOString().slice(0, 10) : "", s.c.consent.whatsapp ? "yes" : "no", s.c.consent.email ? "yes" : "no"])]};
+}
+function mktRows() { return {campaigns: [["Campaign", "Channel", "Status", "Recipients", "Delivered", "Clicks", "Orders", "Revenue"], ...db.campaigns.map(c => [c.name, c.channel, c.status, c.recipients, c.delivered, c.clicks, c.orders, c.revenue])], abandoned: [["Customer", "Suit", "Value", "Date", "Consent"], ...db.abandoned.map(a => [(C(a.customerId) || {}).name, a.items[0].name, a.items[0].price, a.at.slice(0, 10), a.consent ? "yes" : "no"])]}; }
+function htmlTable(rows, money) { return `<div class="tbl-wrap"><table><thead><tr class="static">${rows[0].map((h, i) => `<th class="${i ? "r" : ""}">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.slice(1).map(r => `<tr class="static">${r.map((v, i) => `<td class="${i ? "r num" : ""}">${esc(typeof v === "number" && money.includes(rows[0][i]) ? rs(v) : v)}</td>`).join("")}</tr>`).join("") || `<tr class="static"><td colspan="${rows[0].length}" class="empty">No data</td></tr>`}</tbody></table></div>`; }
+const MONEY = ["Gross", "Discount", "Net", "Revenue", "Value", "Price", "Stock value", "Total spent"];
+let RPT = {};
+VIEWS.reports = function (p) {
+  const tab = p.tab || "sales", rg = p.range || "all";
+  const tabs = [["sales", "Sales"], ["inventory", "Inventory"], ["customers", "Customers"], ["marketing", "Marketing"]];
+  let sections = [];
+  if (tab === "sales") { const s = salesRows(rg); sections = [["Daily sales", s.daily], ["Monthly sales", s.monthly], ["Revenue by product", s.product], ["Revenue by collection", s.collection], ["Payment methods", s.payment], ["Returns and refunds", s.returns]]; }
+  if (tab === "inventory") { const s = invRows(); sections = [["Current stock", s.stock], ["Stock movements", s.ledger.slice(0, 1).concat(s.ledger.slice(1).reverse())]]; }
+  if (tab === "customers") { const s = custRows(); sections = [["Customer summary", s.summary], ["Customer list", s.list]]; }
+  if (tab === "marketing") { const s = mktRows(); sections = [["Campaign performance", s.campaigns], ["Abandoned checkouts", s.abandoned]]; }
+  RPT = Object.fromEntries(sections);
+  $("#main").innerHTML = `<div class="phead"><div><h1>Reports</h1><p>Download any table as Excel or CSV.</p></div>${tab === "sales" ? `<div class="chips">${[["7d", "7 days"], ["30d", "30 days"], ["90d", "90 days"], ["all", "All"]].map(([v, l]) => `<button class="chip" data-go="reports?tab=sales&range=${v}" aria-pressed="${rg === v}">${l}</button>`).join("")}</div>` : ""}</div>
+  <div class="mtabs">${tabs.map(([v, l]) => `<button class="mtab" data-go="reports?tab=${v}" aria-selected="${tab === v}">${l}</button>`).join("")}</div>
+  ${tab === "marketing" ? '<div class="note info" style="margin-bottom:12px">Traffic sources and the conversion funnel appear once Google Analytics 4 is connected. Campaign revenue counts only orders that used the campaign link.</div>' : ""}
+  <div class="grid">${sections.map(([t, rows]) => `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px"><h2 style="margin:0">${esc(t)} <small>${rows.length - 1} rows</small></h2><span class="tools"><button class="btn sm" data-xlsx="${esc(t)}">Excel</button><button class="btn sm" data-csv="${esc(t)}">CSV</button></span></div><div style="max-height:360px;overflow:auto">${htmlTable(rows.length > 201 ? rows.slice(0, 201) : rows, MONEY)}</div></div>`).join("")}</div>`;
+};
+
+/* assistant */
+let CHAT = [];
+VIEWS.assistant = function () {
+  $("#main").innerHTML = `<div class="phead"><div><h1>Label Anant assistant</h1><p>Ask about sales, orders, stock and customers. Answers come only from the store's records.</p></div></div>
+  <div class="chat"><div class="note info">Demo assistant: it answers with built-in rules over the demo data, and drafts text only from details already saved on a product. A live AI model can be connected through the secure server later; it would follow the same rule: never invent sales, orders or specifications.</div>
+  <div class="sugg">${["What were today's sales?", "Which products are selling fastest?", "Which orders are awaiting dispatch?", "Which products are out of stock?", "What is our average order value?", "Which products have not sold in 60 days?", "Which customers have unresolved complaints?", "Which orders have not been delivered?", "Summarize today's operational issues", "Generate a weekly sales and inventory report", "Write a description for LA-116", "Instagram caption for the velvet collection", "WhatsApp campaign draft for new arrivals"].map(s => `<button class="chip" data-ask="${esc(s)}">${esc(s)}</button>`).join("")}</div>
+  <div class="msgs" id="msgs" aria-live="polite"></div>
+  <form class="chatbar" id="chatf"><input id="chatin" placeholder="Ask a question, e.g. which orders are awaiting dispatch?" aria-label="Ask the assistant" autocomplete="off"><button class="btn pri">Ask</button></form></div>`;
+  drawChat();
+  $("#chatf").addEventListener("submit", e => { e.preventDefault(); const v = $("#chatin").value.trim(); if (v) { ask(v); $("#chatin").value = ""; } });
+};
+function drawChat() { const el = $("#msgs"); if (!el) return; el.innerHTML = CHAT.map(m => `<div class="msg ${m.me ? "me" : "ai"}">${m.me ? esc(m.t) : m.t}</div>`).join("") || '<div class="empty">Tap a suggestion or type a question.</div>'; el.lastElementChild && el.lastElementChild.scrollIntoView({block: "nearest"}); }
+function tbl(head, rows) { return `<table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`; }
+function ask(text) {
+  CHAT.push({me: 1, t: text});
+  const s = text.toLowerCase(); let a;
+  const oLink = o => `<button class="lk" data-oopen="${o.id}">${o.id}</button>`;
+  const sold = days => { const m = {}; D.paidOrders(db).filter(o => Date.now() - Date.parse(o.createdAt) < days * 864e5).forEach(o => o.items.forEach(i => m[i.pid] = (m[i.pid] || 0) + i.qty)); return m; };
+  const idm = text.match(/\b(LA|DM)-\d{3}\b/i);
+  if (/descri/.test(s) && idm) {
+    const p = P(idm[0].toUpperCase());
+    if (!p) a = "I could not find that product code.";
+    else {
+      const facts = [p.fabric && `${p.fabric.toLowerCase()} fabric`, p.colours.length && D.COLOURS[p.colours[0]] && D.COLOURS[p.colours[0]][0].toLowerCase(), p.pattern && p.pattern.toLowerCase() + " pattern", p.embroidery && p.embroidery.toLowerCase()].filter(Boolean);
+      const occ = p.occasions.map(o => o[0].toUpperCase() + o.slice(1)).join(", ");
+      const draft = `${p.name.replace("Demo · ", "")}: an unstitched suit set in ${facts.join(", ") || "[add fabric and colour]"}. ${p.components ? "Includes " + p.components.replace(/\s*\(to be verified\)/, "") + "." : "[Add what is included.]"} ${occ ? "Made for " + occ.toLowerCase() + " occasions." : ""} ${p.care ? "Care: " + p.care.toLowerCase() + "." : ""}`.replace(/\s+/g, " ").trim();
+      const missing = ["fabric", "pattern", "embroidery", "components", "top", "bottom", "dupatta"].filter(k => !p[k] || /to be verified/.test(p[k]));
+      a = `Draft description for <b>${esc(p.name)}</b>, using only saved details:<div class="field" style="margin-top:8px"><textarea id="draftDesc">${esc(draft)}</textarea></div>${missing.length ? `<p style="color:var(--warn);margin:6px 0 0">Missing or unverified: ${missing.join(", ")}. Add them in the product editor for a fuller description.</p>` : ""}${!p.verified && p.real ? '<p style="color:var(--warn);margin:6px 0 0">This product\'s details are not verified yet.</p>' : ""}<div style="margin-top:8px;display:flex;gap:8px"><button class="btn sm pri" data-approve-desc="${p.id}">Approve and save to product</button><button class="btn sm" data-oprod="${p.id}">Open product</button></div>`;
+    }
+  } else if (/today/.test(s) && /(sale|revenue|sold)/.test(s)) {
+    const os = D.paidOrders(db).filter(o => D.inRange(o.createdAt, "today"));
+    a = os.length ? `Today: <b>${rs(os.reduce((x, o) => x + o.total, 0))}</b> from ${os.length} paid order${os.length > 1 ? "s" : ""}.` + tbl(["Order", "Customer", "Total"], os.map(o => [oLink(o), esc(o.customerName), rs(o.total)])) : "No paid orders yet today.";
+    const pend = db.orders.filter(o => o.status === "placed" && D.inRange(o.createdAt, "today")); if (pend.length) a += `<p>${pend.length} more order${pend.length > 1 ? "s are" : " is"} awaiting payment.</p>`;
+  } else if (/(fast|best|top).*(sell|product)|selling/.test(s)) {
+    const m = sold(30), top = Object.entries(m).sort((x, y) => y[1] - x[1]).slice(0, 5);
+    a = top.length ? "Top sellers in the last 30 days (paid orders):" + tbl(["Product", "Units", "In stock"], top.map(([id, u]) => [`<button class="lk" data-oprod="${id}">${esc(P(id).name)}</button>`, u, P(id).stock ?? "–"])) : "No sales in the last 30 days.";
+  } else if (/dispatch|to ship|not shipped/.test(s)) {
+    const os = db.orders.filter(o => TO_DISPATCH.includes(o.status));
+    a = os.length ? `${os.length} paid order${os.length > 1 ? "s" : ""} waiting to be dispatched:` + tbl(["Order", "Status", "Paid", "Customer"], os.map(o => [oLink(o), esc(D.STATUS[o.status]), ago(o.payment.at || o.createdAt), esc(o.customerName)])) : "Nothing is waiting for dispatch.";
+  } else if (/out of stock|stock out/.test(s)) {
+    const ps = db.products.filter(p => p.status === "published" && p.stock === 0);
+    a = ps.length ? `${ps.length} published product${ps.length > 1 ? "s are" : " is"} out of stock:` + tbl(["Product", "SKU"], ps.map(p => [`<button class="lk" data-oprod="${p.id}">${esc(p.name)}</button>`, esc(p.sku)])) : "No published product is out of stock.";
+  } else if (/average order|aov/.test(s)) {
+    const m30 = metrics("30d"), all = metrics("all");
+    a = `Average order value: <b>${rs(m30.aov)}</b> over the last 30 days (${m30.paid.length} paid orders), and ${rs(all.aov)} across all time. It is calculated after discounts.`;
+  } else if (/(not sold|no sales|slow|60 days)/.test(s)) {
+    const m = sold(60), ps = db.products.filter(p => p.status === "published" && !m[p.id]);
+    a = ps.length ? `${ps.length} published products have no paid sales in the last 60 days:` + tbl(["Product", "Stock", "Price"], ps.slice(0, 15).map(p => [`<button class="lk" data-oprod="${p.id}">${esc(p.name)}</button>`, p.stock ?? "–", rs(p.price)])) : "Every published product sold at least once in the last 60 days.";
+  } else if (/complain|unresolved|issue|support/.test(s) && !/operational/.test(s)) {
+    const ts = db.tickets.filter(t => t.status === "open");
+    a = ts.length ? `${ts.length} open customer issue${ts.length > 1 ? "s" : ""}:` + tbl(["Issue", "Customer", "Raised"], ts.map(t => [esc(t.subject), `<button class="lk" data-cust="${t.customerId}">${esc(C(t.customerId).name)}</button>`, ago(t.createdAt)])) : "No unresolved customer issues.";
+  } else if (/not (been )?delivered|undelivered|in transit/.test(s)) {
+    const os = db.orders.filter(o => ["shipped", ...TO_DISPATCH].includes(o.status));
+    a = `${os.length} paid orders are not delivered yet:` + tbl(["Order", "Status", "Courier", "Since"], os.map(o => [oLink(o), esc(D.STATUS[o.status]), esc(o.courier || "–"), ago(o.history[o.history.length - 1].at)]));
+  } else if (/operational|summar|issues today|attention/.test(s)) {
+    const at = attention();
+    a = at.length ? "Here is what needs attention:<ul>" + at.map(x => `<li><b>${esc(x[2])}</b> · ${esc(x[3])}</li>`).join("") + "</ul>" : "Nothing needs attention right now.";
+  } else if (/weekly|week report|report/.test(s)) {
+    const m = metrics("7d"), sl = sold(7), top = Object.entries(sl).sort((x, y) => y[1] - x[1]).slice(0, 3);
+    const out = db.products.filter(p => p.status === "published" && p.stock === 0).length, low = db.products.filter(p => p.status === "published" && p.stock > 0 && p.stock <= (p.threshold ?? db.settings.lowStockDefault)).length;
+    a = `<b>Weekly report · last 7 days</b>` + tbl(["Measure", "Value"], [["Orders", m.all.length], ["Paid orders", m.paid.length], ["Revenue", rs(m.revenue)], ["Average order value", rs(m.aov)], ["Discounts", rs(m.disc)], ["Refunds", rs(m.refunds)], ["New customers", m.newCust], ["Top seller", top[0] ? esc(P(top[0][0]).name) + " (" + top[0][1] + ")" : "–"], ["Out of stock", out], ["Low stock", low], ["Open issues", db.tickets.filter(t => t.status === "open").length]]) + `<p><button class="btn sm" data-go="reports?tab=sales&range=7d">Open full report</button></p>`;
+  } else if (/instagram|caption/.test(s)) {
+    const col = Object.keys(D.COLS).find(c => s.includes(c)) || Object.entries(D.COLS).find(([, l]) => s.includes(l.toLowerCase().split(" ")[0]))?.[0];
+    const ps = db.products.filter(p => p.status === "published" && (!col || p.collections.includes(col)) && p.real).slice(0, 3);
+    a = `Draft caption${col ? " for " + esc(D.COLS[col]) : ""}, using product names and saved details only:<div class="field" style="margin-top:8px"><textarea>${esc(`${col ? D.COLS[col] : "New at Label Anant"} ✨\n${ps.map(p => `${p.name} · ${p.fabric}`).join("\n")}\nUnstitched, with dupatta. Order on WhatsApp +91 99101 88555 or at the link in bio.\n#LabelAnant #UnstitchedSuits #${(col || "ethnicwear").replace(/\W/g, "")}`)}</textarea></div><p style="color:var(--soft);margin:6px 0 0">Check prices and details before posting.</p>`;
+  } else if (/whatsapp.*(campaign|draft|message)|campaign/.test(s)) {
+    const aud = D.audience(db, "whatsapp").length;
+    a = `Draft WhatsApp campaign (for customers who opted in: ${aud}):<div class="field" style="margin-top:8px"><textarea id="campDraft">New suits have arrived at Label Anant: printed crepe and Kalamkari sets, unstitched with dupatta. Reply to this message to see photos and prices. Reply STOP to opt out.</textarea></div><p style="margin:6px 0 0"><button class="btn sm pri" data-act="draft-to-campaign">Save as draft campaign</button> It will still need your approval before sending.</p>`;
+  } else {
+    a = "I can answer questions about today's sales, top sellers, orders to dispatch, out-of-stock and slow-moving products, average order value, open complaints, undelivered orders, a weekly report, and draft product descriptions (for example \"write a description for LA-116\"), Instagram captions or WhatsApp campaigns.";
+  }
+  CHAT.push({me: 0, t: a}); drawChat();
+}
+
+/* settings */
+VIEWS.settings = function (p) {
+  const tab = p.tab || "store", st = db.settings;
+  const tabs = [["store", "Store details"], ["policies", "Policies"], ["verify", "Data to verify"], ["audit", "Activity log"], ["data", "Demo data"]];
+  let html = `<div class="phead"><div><h1>Settings</h1></div></div><div class="mtabs">${tabs.map(([v, l]) => `<button class="mtab" data-go="settings?tab=${v}" aria-selected="${tab === v}">${l}</button>`).join("")}</div>`;
+  if (tab === "store") html += `<div class="card" style="max-width:720px"><form class="form" id="sform" novalidate><div class="field"><label for="s-name">Store name</label><input id="s-name" value="${esc(st.storeName)}"></div><div class="field"><label for="s-wa">WhatsApp number</label><input id="s-wa" value="${esc(st.whatsapp)}" inputmode="numeric"><small>With country code, e.g. 919910188555</small></div><div class="field full"><label for="s-addr">Business address</label><input id="s-addr" value="${esc(st.address)}"></div><div class="field"><label for="s-email">Support email</label><input id="s-email" type="email" value="${esc(st.email)}"></div><div class="field"><label for="s-gst">GSTIN</label><input id="s-gst" value="${esc(st.gstin)}" placeholder="15 characters"><small>Needed before real tax invoices can be issued</small></div><div class="field"><label for="s-low">Default low-stock alert</label><input id="s-low" type="number" min="0" value="${st.lowStockDefault}"></div><p class="ferr full" id="serr2"></p><div class="full"><button class="btn pri" data-act="save-store">Save</button></div></form></div>`;
+  if (tab === "policies") html += `<div class="note" style="margin-bottom:12px">Drafts only. Policies are published on the shop once Label Anant has decided the terms. Text in [square brackets] needs your decision.</div><div class="grid g2">${Object.entries(st.policies).map(([k, v]) => `<div class="card"><h2>${esc({shipping: "Shipping", returns: "Returns and exchanges", refunds: "Refunds", cancellation: "Cancellation", privacy: "Privacy", terms: "Terms and conditions", support: "Customer support"}[k])} <small>${/\[/.test(v) ? "Needs decisions" : "Ready to review"}</small></h2><div class="field"><textarea id="pol-${k}" style="min-height:120px">${esc(v)}</textarea></div></div>`).join("")}</div><button class="btn pri" style="margin-top:12px" data-act="save-policies">Save drafts</button>`;
+  if (tab === "verify") { const unv = db.products.filter(p => p.real && !p.verified); html += `<div class="card"><h2>Before launch, please confirm</h2><ul style="line-height:1.9"><li>${unv.length} live products with sample prices and descriptions · <button class="lk" data-go="products?f=unverified">review them</button></li><li>GSTIN ${st.gstin ? "✓ entered" : "not entered"} · HSN codes and GST rates per product</li><li>Shipping promise "Free shipping across India" and dispatch time</li><li>Return, exchange, refund and cancellation rules · <button class="lk" data-go="settings?tab=policies">policy drafts</button></li><li>Stock quantities for each live product</li><li>AI-styled wearing photos: confirm each matches the real suit (especially purple velvet)</li><li>Founder story and brand details for the About section</li></ul></div>`; }
+  if (tab === "audit") html += `<div class="tbl-wrap"><table><thead><tr class="static"><th>When</th><th>Who</th><th>Action</th><th>Ref</th></tr></thead><tbody>${db.audit.slice(0, 150).map(a => `<tr class="static"><td>${fmtDT(a.at)}</td><td>${esc(a.user)}</td><td>${esc(a.action)}</td><td>${esc(a.ref)}</td></tr>`).join("")}</tbody></table></div>`;
+  if (tab === "data") html += `<div class="card" style="max-width:720px"><h2>Demo data</h2><p>All demo data lives in this browser. Export a backup, load one, or start again with fresh sample data.</p><div class="tools"><button class="btn" data-act="backup">Download backup (JSON)</button><label class="btn" style="cursor:pointer">Load backup<input type="file" id="bkIn" accept="application/json,.json" hidden></label><button class="btn danger" data-act="reset">Reset demo data</button></div></div>`;
+  $("#main").innerHTML = html;
+  const bk = $("#bkIn"); if (bk) bk.addEventListener("change", e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const d = JSON.parse(r.result); if (!d || d.version !== 1 || !Array.isArray(d.products) || !Array.isArray(d.orders)) throw new Error(); db = d; save(); toast("Backup loaded"); route(); } catch (err) { toast("That file is not a Label Anant demo backup"); } }; r.readAsText(f); });
+};
+
+/* ---------- exports: CSV and real .xlsx ---------- */
+function download(name, blob) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+const csvCell = v => { let s = String(v == null ? "" : v); if (/^[=+\-@]/.test(s)) s = "'" + s; return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+function toCSV(rows) { return "﻿" + rows.map(r => r.map(csvCell).join(",")).join("\r\n"); }
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function zip(files) {
+  const enc = new TextEncoder(), parts = [], cen = []; let off = 0;
+  files.forEach(([name, text]) => {
+    const n = enc.encode(name), d = enc.encode(text), c = crc32(d), h = new DataView(new ArrayBuffer(30));
+    h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(8, 0, true); h.setUint32(14, c, true); h.setUint32(18, d.length, true); h.setUint32(22, d.length, true); h.setUint16(26, n.length, true);
+    parts.push(new Uint8Array(h.buffer), n, d);
+    const ch = new DataView(new ArrayBuffer(46)); ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint32(16, c, true); ch.setUint32(20, d.length, true); ch.setUint32(24, d.length, true); ch.setUint16(28, n.length, true); ch.setUint32(42, off, true);
+    cen.push(new Uint8Array(ch.buffer), n); off += 30 + n.length + d.length;
+  });
+  const cs = cen.reduce((s, a) => s + a.length, 0), e = new DataView(new ArrayBuffer(22)); e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, cs, true); e.setUint32(16, off, true);
+  return new Blob([...parts, ...cen, new Uint8Array(e.buffer)], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+function toXLSX(rows, sheet) {
+  const x = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c])).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
+  const col = i => { let s = ""; i++; while (i) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = (i - 1) / 26 | 0; } return s; };
+  const data = rows.map((r, ri) => `<row r="${ri + 1}">${r.map((v, ci) => typeof v === "number" && isFinite(v) ? `<c r="${col(ci)}${ri + 1}"${ri === 0 ? ' s="1"' : ""}><v>${v}</v></c>` : `<c r="${col(ci)}${ri + 1}" t="inlineStr"${ri === 0 ? ' s="1"' : ""}><is><t xml:space="preserve">${x(v == null ? "" : v)}</t></is></c>`).join("")}</row>`).join("");
+  const name = x(sheet.slice(0, 31).replace(/[\\/?*\[\]:]/g, " "));
+  return zip([
+    ["[Content_Types].xml", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+    ["_rels/.rels", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${name}" sheetId="1" r:id="rId1"/></sheets></workbook>`],
+    ["xl/_rels/workbook.xml.rels", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+    ["xl/styles.xml", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="2"><xf/><xf fontId="1" applyFont="1"/></cellXfs></styleSheet>'],
+    ["xl/worksheets/sheet1.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetData>${data}</sheetData></worksheet>`]]);
+}
+const fileName = t => "label-anant-" + t.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + new Date().toISOString().slice(0, 10);
+function exportRows(title, rows, kind) { if (kind === "csv") download(fileName(title) + ".csv", new Blob([toCSV(rows)], {type: "text/csv;charset=utf-8"})); else download(fileName(title) + ".xlsx", toXLSX(rows, title)); toast(`${title} downloaded`); }
+const orderRows = () => [["Order", "Date", "Customer", "City", "State", "Items", "Subtotal", "Discount", "Coupon", "Total", "Payment method", "Payment status", "Payment ref", "Status", "Courier", "Tracking"], ...db.orders.map(o => [o.id, o.createdAt.slice(0, 16).replace("T", " "), o.customerName, o.address.city, o.address.state, o.items.map(i => `${i.sku || i.pid} x${i.qty}`).join("; "), o.subtotal, o.discount, o.coupon, o.total, o.payment.method, o.payment.status, o.payment.ref, D.STATUS[o.status], o.courier, o.tracking])];
+const PCOLS = ["id", "sku", "name", "collections", "category", "fabric", "colours", "pattern", "embroidery", "components", "top", "bottom", "dupatta", "occasions", "care", "price", "mrp", "gst", "stock", "threshold", "status", "returnable", "seoTitle", "seoDesc", "tags", "desc", "verified"];
+const productRows = () => [PCOLS, ...db.products.map(p => PCOLS.map(k => Array.isArray(p[k]) ? p[k].join("|") : p[k] == null ? "" : typeof p[k] === "boolean" ? (p[k] ? "yes" : "no") : p[k]))];
+function parseCSV(t) { const rows = []; let r = [], f = "", qd = false; t = t.replace(/^﻿/, ""); for (let i = 0; i < t.length; i++) { const c = t[i]; if (qd) { if (c === '"' && t[i + 1] === '"') { f += '"'; i++; } else if (c === '"') qd = false; else f += c; } else if (c === '"') qd = true; else if (c === ",") { r.push(f); f = ""; } else if (c === "\n" || c === "\r") { if (c === "\r" && t[i + 1] === "\n") i++; r.push(f); rows.push(r); r = []; f = ""; } else f += c; } if (f || r.length) { r.push(f); rows.push(r); } return rows.filter(x => x.some(v => v.trim())); }
+function importCSV(file) {
+  if (!file) return; if (file.size > 2e6) return toast("CSV is larger than 2 MB");
+  const rd = new FileReader(); rd.onload = () => {
+    const rows = parseCSV(rd.result); if (rows.length < 2) return toast("The CSV has no product rows");
+    const h = rows[0].map(x => x.trim()); const need = ["sku", "name", "price"]; const miss = need.filter(n => !h.includes(n)); if (miss.length) return toast("Missing columns: " + miss.join(", "));
+    let added = 0, updated = 0; const errors = [];
+    rows.slice(1).forEach((r, i) => {
+      const o = Object.fromEntries(h.map((k, j) => [k, (r[j] || "").trim()])); const line = i + 2;
+      const price = Number(o.price); if (!/^[A-Za-z0-9-]{3,30}$/.test(o.sku)) return errors.push(`Row ${line}: bad SKU`); if (!o.name) return errors.push(`Row ${line}: name missing`); if (!Number.isInteger(price) || price <= 0) return errors.push(`Row ${line}: price must be whole rupees`);
+      let p = db.products.find(x => x.sku === o.sku.toUpperCase() || (o.id && x.id === o.id));
+      const fields = {name: o.name.slice(0, 120), price, fabric: o.fabric || "", category: o.category || "Unstitched suit set", desc: o.desc || "", care: o.care || "", collections: (o.collections || "").split("|").filter(c => D.COLS[c]), colours: (o.colours || "").split("|").filter(c => D.COLOURS[c]), occasions: (o.occasions || "").split("|").filter(Boolean), status: ["published", "draft", "scheduled", "archived"].includes(o.status) ? o.status : "draft", threshold: o.threshold ? Number(o.threshold) : db.settings.lowStockDefault, mrp: o.mrp ? Number(o.mrp) : null};
+      if (p) { const before = p.price; Object.assign(p, fields); if (o.stock !== "" && o.stock != null && Number.isInteger(Number(o.stock)) && Number(o.stock) !== p.stock) D.adjustStock(db, p.id, Number(o.stock) - (p.stock || 0), "CSV import", "Owner"); if (before !== price) D.log(db, "Owner", `CSV price ${rs(before)} → ${rs(price)}`, p.id); updated++; }
+      else { p = Object.assign({id: "DM-" + (++db.seq.product + 100), sku: o.sku.toUpperCase(), variants: [], images: [], real: false, verified: false, createdAt: new Date().toISOString(), placeholder: "#C9A24E", stock: 0, tags: ["Imported"], pattern: "", embroidery: "", components: "", top: "", bottom: "", dupatta: "", gst: null, returnable: null, video: "", shipping: "", seoTitle: "", seoDesc: "", related: [], n: 0}, fields); if (!p.collections.length) p.collections = ["everyday"]; db.products.unshift(p); if (Number(o.stock) > 0) D.adjustStock(db, p.id, Number(o.stock), "CSV import opening stock", "Owner"); added++; }
+    });
+    D.log(db, "Owner", `CSV import: ${added} added, ${updated} updated, ${errors.length} skipped`); save(); VIEWS.products(q());
+    modal(`<h2>Import finished</h2><p>${added} added · ${updated} updated · ${errors.length} skipped</p>${errors.length ? `<ul style="color:var(--bad);font-size:13px">${errors.slice(0, 12).map(e => `<li>${esc(e)}</li>`).join("")}</ul>` : ""}<button class="btn pri" data-act="mclose">Done</button>`);
+  }; rd.readAsText(file);
+}
+
+/* ---------- global clicks ---------- */
+document.addEventListener("click", e => {
+  const t = e.target.closest("button,a,[data-go],tr[data-cust]"); if (!t) return;
+  const d = t.dataset;
+  if (d.go) { e.preventDefault(); const [pg, qs] = d.go.split("?"); go(pg, qs ? Object.fromEntries(new URLSearchParams(qs)) : null); return; }
+  if (d.range) { range = d.range; VIEWS.dashboard(); return; }
+  if (d.cust) { openCustomer(d.cust); return; }
+  if (d.oopen) { openOrder(d.oopen); return; }
+  if (d.oprod) { openProduct(d.oprod); return; }
+  if (d.move) { doMove(d.oid, d.move); return; }
+  if (d.invoice) { invoice(d.invoice); return; }
+  if (d.wamsg) { const o = db.orders.find(x => x.id === d.wamsg); modal(`<h2>Message to ${esc(o.customerName)}</h2><div class="field"><textarea id="wam">Hello ${esc(o.customerName.split(" ")[0])}, this is Label Anant about your order ${esc(o.id)}: ${esc(D.STATUS[o.status])}.${o.tracking ? " Tracking: " + esc(o.courier) + " " + esc(o.tracking) + "." : ""}</textarea></div><p class="note info" style="margin-top:10px">Demo customer, so nothing is sent. With the WhatsApp Business Platform connected, order updates go out automatically using approved templates.</p><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Close</button></div>`); return; }
+  if (d.addnote) { const v = $("#noteIn").value.trim(); if (!v) return toast("Write a note first"); const o = db.orders.find(x => x.id === d.addnote); o.notes.push({at: new Date().toISOString(), by: "Owner", text: v.slice(0, 500)}); D.log(db, "Owner", "Added note", o.id); save(); openOrder(o.id); return; }
+  if (d.ship) { const c = $("#sc").value, tr = $("#st").value.trim(); if (!c || !/^[A-Za-z0-9-]{5,30}$/.test(tr)) { $("#serr").textContent = !c ? "Choose a courier." : "Tracking number: 5–30 letters or numbers."; return; } try { D.move(db, d.ship, "shipped", "Owner", "Handed to " + c, {courier: c, tracking: tr}); save(); closeModal(); toast(d.ship + " shipped"); openOrder(d.ship); refreshList(); } catch (err) { $("#serr").textContent = err.message; } return; }
+  if (d.cancel) { const r = $("#cr").value.trim(); if (r.length < 3) { $("#cerr").textContent = "Give a short reason."; return; } try { D.move(db, d.cancel, "cancelled", "Owner", r); save(); closeModal(); toast(d.cancel + " cancelled; stock restored"); openOrder(d.cancel); refreshList(); } catch (err) { $("#cerr").textContent = err.message; } return; }
+  if (d.retreq) { const r = $("#rr").value.trim(); if (r.length < 3) { $("#rerr").textContent = "Enter the reason."; return; } D.move(db, d.retreq, "return_requested", "Owner", r, {reason: r}); save(); closeModal(); openOrder(d.retreq); refreshList(); return; }
+  if (d.refund) { D.move(db, d.refund, "refunded", "Payment gateway (demo)", "Refund processed (simulated)"); save(); closeModal(); toast("Refund processed (simulated)"); openOrder(d.refund); refreshList(); return; }
+  if (d.saveprod !== undefined && t.matches("[data-saveprod]")) { saveProduct(d.saveprod, d.newid); return; }
+  if (d.rmimg) { editImages.splice(+d.rmimg, 1); drawImgs(); return; }
+  if (d.bulk) { const ids = d.bulk.split(","), m = $("#bm").value, v = Number($("#bv").value); if (!Number.isFinite(v) || v === 0 && m !== "set") { $("#berr").textContent = "Enter a number."; return; } const np = p => Math.round((m === "pct" ? p.price * (1 + v / 100) : m === "amt" ? p.price + v : v) / 10) * 10; if (ids.some(id => np(P(id)) <= 0)) { $("#berr").textContent = "That would make a price zero or negative."; return; } ids.forEach(id => { const p = P(id), o = p.price; p.price = np(p); D.log(db, "Owner", `Bulk price ${rs(o)} → ${rs(p.price)}`, id); }); save(); closeModal(); toast(`${ids.length} prices updated`); VIEWS.products(q()); return; }
+  if (d.adj) { adjustModal(d.adj); return; }
+  if (d.doadj) { const v = Number($("#aq").value); if (!Number.isInteger(v) || v === 0) { $("#aerr").textContent = "Enter a whole number other than 0."; return; } try { D.adjustStock(db, d.doadj, v, $("#ar").value + ($("#an").value.trim() ? ": " + $("#an").value.trim().slice(0, 120) : ""), "Owner"); D.log(db, "Owner", `Stock ${v > 0 ? "+" : ""}${v}`, d.doadj); save(); closeModal(); toast("Stock updated"); VIEWS.inventory(q()); } catch (err) { $("#aerr").textContent = err.message; } return; }
+  if (d.read) { const n = db.notifications.find(x => x.id === d.read); if (n) n.read = true; save(); VIEWS.inventory(q()); return; }
+  if (d.resolve) { const tk = db.tickets.find(x => x.id === d.resolve); tk.status = "resolved"; tk.messages.push({at: new Date().toISOString(), by: "Owner", text: "Resolved"}); D.log(db, "Owner", "Resolved issue", tk.id); save(); toast("Issue resolved"); ticketsView(q()); return; }
+  if (d.savecnote) { C(d.savecnote).notes = $("#cnote").value.slice(0, 1000); save(); toast("Note saved"); return; }
+  if (d.camp) {
+    const c = db.campaigns.find(x => x.id === d.cid);
+    if (d.camp === "submit") { c.status = "pending_approval"; D.log(db, "Owner", "Submitted campaign for approval", c.id); }
+    if (d.camp === "approve") { c.status = "approved"; c.approvedBy = "Owner"; c.approvedAt = new Date().toISOString(); D.log(db, "Owner", "Approved campaign", c.id); }
+    if (d.camp === "send") { const aud = D.audience(db, c.segment).filter(x => c.channel === "WhatsApp" ? x.consent.whatsapp : x.consent.email); if (!aud.length) return toast("No opted-in customers in this audience"); return modal(`<h2>Send "${esc(c.name)}"?</h2><p>${aud.length} opted-in customers by ${esc(c.channel)}.</p><div class="card" style="background:var(--blush)">${esc(c.message)}</div><p class="note info" style="margin-top:10px">Demo: no messages are actually sent. Delivery reports appear once the channel is connected.</p><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn pri" data-sendc="${c.id}">Send (demo)</button></div>`); }
+    save(); VIEWS.marketing(q()); return;
+  }
+  if (d.sendc) { const c = db.campaigns.find(x => x.id === d.sendc), aud = D.audience(db, c.segment).filter(x => c.channel === "WhatsApp" ? x.consent.whatsapp : x.consent.email); c.status = "sent"; c.sentAt = new Date().toISOString(); c.recipients = aud.length; c.delivered = 0; D.log(db, "Owner", `Sent campaign to ${aud.length} (demo)`, c.id); save(); closeModal(); toast("Campaign marked as sent (demo)"); VIEWS.marketing(q()); return; }
+  if (d.toggleCoupon) { const c = db.coupons.find(x => x.code === d.toggleCoupon); c.active = !c.active; D.log(db, "Owner", `Coupon ${c.active ? "on" : "off"}`, c.code); save(); VIEWS.marketing(q()); return; }
+  if (d.ask) { if (location.hash.indexOf("assistant") < 0) go("assistant"); setTimeout(() => ask(d.ask), 30); return; }
+  if (d.approveDesc) { const p = P(d.approveDesc), v = $("#draftDesc").value.trim(); if (v.length < 20) return toast("Description is too short"); p.desc = v; D.log(db, "Owner", "Approved assistant description", p.id); save(); toast("Description saved to " + p.id); return; }
+  const act = d.act; if (!act) return;
+  if (act === "close") closeAll();
+  if (act === "mclose") closeModal();
+  if (act === "logout") { try { sessionStorage.removeItem("la-admin-demo"); } catch (err) {} route(); }
+  if (act === "reset") { modal(`<h2>Reset demo data?</h2><p>All demo products, orders, customers and changes in this browser are replaced with fresh sample data.</p><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn danger" data-act="do-reset">Reset</button></div>`); }
+  if (act === "do-reset") { db = D.reset(); CHAT = []; closeAll(); toast("Fresh demo data loaded"); route(); }
+  if (act === "more") { const cur = (location.hash.slice(2).split("?")[0]) || "dashboard"; modal(`<h2>Menu</h2><div style="display:flex;flex-direction:column;gap:6px">${PAGES.map(([id, l]) => `<a class="btn" style="justify-content:flex-start" href="#/${id}" ${cur === id ? 'aria-current="page"' : ""}>${l}</a>`).join("")}<a class="btn" style="justify-content:flex-start" href="../index.html?demo=1" target="_blank" rel="noopener">Shop in demo mode</a><button class="btn" style="justify-content:flex-start" data-act="logout">Sign out</button></div>`); }
+  if (act === "new-product") openProduct(null);
+  if (act === "bulk-price") bulkPrice();
+  if (act === "export-products") exportRows("Products", productRows(), "xlsx");
+  if (act === "export-products-csv") exportRows("Products", productRows(), "csv");
+  if (act === "export-orders") exportRows("Orders", orderRows(), "xlsx");
+  if (act === "export-customers") exportRows("Customers", custRows().list, "xlsx");
+  if (act === "export-ledger") exportRows("Stock ledger", invRows().ledger, "xlsx");
+  if (act === "export-stock") exportRows("Stock", invRows().stock, "xlsx");
+  if (act === "refund-cancel") { D.refundCancelled(db, d.oid, "Owner"); save(); toast("Refund processed (simulated)"); openOrder(d.oid); refreshList(); }
+  if (act === "new-coupon") modal(`<h2>New coupon</h2><div class="form"><div class="field"><label for="cc">Code</label><input id="cc" placeholder="e.g. WEDDING10" style="text-transform:uppercase"></div><div class="field"><label for="ct">Type</label><select id="ct"><option value="percent">Percent off</option><option value="flat">Rupees off</option></select></div><div class="field"><label for="cv">Value</label><input id="cv" type="number" min="1"></div><div class="field"><label for="cm">Minimum order (₹)</label><input id="cm" type="number" min="0" value="0"></div><div class="field"><label for="ce">Expires</label><input id="ce" type="date"></div><div class="field"><label for="cl">Usage limit</label><input id="cl" type="number" min="1" value="100"></div><p class="ferr full" id="coerr"></p></div><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn pri" data-act="save-coupon">Create coupon</button></div>`);
+  if (act === "save-coupon") { const code = $("#cc").value.trim().toUpperCase(), type = $("#ct").value, val = Number($("#cv").value), min = Number($("#cm").value || 0), exp = $("#ce").value, lim = Number($("#cl").value || 0); const er = !/^[A-Z0-9]{4,15}$/.test(code) ? "Code: 4–15 letters or numbers." : db.coupons.find(c => c.code === code) ? "That code already exists." : !Number.isInteger(val) || val <= 0 ? "Enter a whole-number value." : type === "percent" && val > 50 ? "Percent discounts above 50% are blocked in this demo." : !exp || Date.parse(exp) < Date.now() ? "Choose an expiry date in the future." : !Number.isInteger(lim) || lim < 1 ? "Usage limit must be at least 1." : ""; if (er) { $("#coerr").textContent = er; return; } db.coupons.unshift({code, type, value: val, minOrder: min, expires: new Date(exp + "T23:59:59").toISOString(), limit: lim, used: 0, active: true, note: "Created by owner (demo)"}); D.log(db, "Owner", "Created coupon", code); save(); closeModal(); toast(code + " is live in the demo shop"); VIEWS.marketing({tab: "coupons"}); }
+  if (act === "new-campaign") modal(`<h2>New campaign</h2><div class="form"><div class="field full"><label for="cn">Name</label><input id="cn" placeholder="e.g. Kalamkari launch"></div><div class="field"><label for="cch">Channel</label><select id="cch"><option>WhatsApp</option><option>Email</option></select></div><div class="field"><label for="cs">Audience</label><select id="cs">${Object.entries(D.SEGMENTS).map(([k, l]) => `<option value="${k}">${l}</option>`).join("")}</select></div><div class="field full"><label for="cmsg">Message</label><textarea id="cmsg" maxlength="600">New at Label Anant: … Reply STOP to opt out.</textarea><small>WhatsApp marketing messages must use a template approved by Meta and include an opt-out.</small></div><p class="full" id="caud" style="color:var(--soft);margin:0"></p><p class="ferr full" id="cerr2"></p></div><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn pri" data-act="save-campaign">Save draft</button></div>`) || setTimeout(() => { const upd = () => { const n = D.audience(db, $("#cs").value).filter(x => $("#cch").value === "WhatsApp" ? x.consent.whatsapp : x.consent.email).length; $("#caud").textContent = `${n} customers in this audience have opted in to ${$("#cch").value}.`; }; $("#cs").addEventListener("change", upd); $("#cch").addEventListener("change", upd); upd(); }, 20);
+  if (act === "save-campaign") { const n = $("#cn").value.trim(), m = $("#cmsg").value.trim(); if (n.length < 3 || m.length < 20) { $("#cerr2").textContent = "Give the campaign a name and a message of at least 20 characters."; return; } if ($("#cch").value === "WhatsApp" && !/stop/i.test(m)) { $("#cerr2").textContent = "Add an opt-out line, e.g. \"Reply STOP to opt out\"."; return; } db.campaigns.unshift({id: "CP-" + (++db.seq.campaign), name: n, channel: $("#cch").value, segment: $("#cs").value, message: m, status: "draft", createdAt: new Date().toISOString(), approvedBy: "", approvedAt: null, sentAt: null, recipients: 0, delivered: 0, clicks: 0, orders: 0, revenue: 0, demo: true}); D.log(db, "Owner", "Created campaign draft", n); save(); closeModal(); toast("Draft saved. Submit it for approval when ready."); VIEWS.marketing({tab: "campaigns"}); }
+  if (act === "draft-to-campaign") { const m = $("#campDraft").value.trim(); db.campaigns.unshift({id: "CP-" + (++db.seq.campaign), name: "New arrivals (assistant draft)", channel: "WhatsApp", segment: "whatsapp", message: m, status: "draft", createdAt: new Date().toISOString(), approvedBy: "", approvedAt: null, sentAt: null, recipients: 0, delivered: 0, clicks: 0, orders: 0, revenue: 0, demo: true}); save(); toast("Saved as a draft campaign"); }
+  if (act === "save-ann") { const v = db.settings.announcements.map((_, i) => $("#an" + i).value.trim()).filter(Boolean); if (!v.length) return toast("Keep at least one message"); db.settings.announcements = v; D.log(db, "Owner", "Updated announcement bar"); save(); toast("Announcement saved; it shows in the demo shop"); }
+  if (act === "save-home") { db.settings.homeCollection = $("#hc").value; $$("[data-colfeat]").forEach(c => { db.collections.find(x => x.id === c.dataset.colfeat).featured = c.checked; }); D.log(db, "Owner", "Updated homepage"); save(); toast("Homepage saved; it shows in the demo shop"); }
+  if (act === "save-store") { const wa = $("#s-wa").value.replace(/\D/g, ""), gst = $("#s-gst").value.trim().toUpperCase(), em = $("#s-email").value.trim(), low = Number($("#s-low").value); const er = !/^91[6-9]\d{9}$/.test(wa) ? "WhatsApp number must be 91 followed by a 10-digit mobile number." : gst && !/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(gst) ? "GSTIN format is not valid." : em && !/^\S+@\S+\.\S+$/.test(em) ? "Email is not valid." : !Number.isInteger(low) || low < 0 ? "Low-stock alert must be 0 or more." : ""; if (er) { $("#serr2").textContent = er; return; } Object.assign(db.settings, {storeName: $("#s-name").value.trim() || "Label Anant", whatsapp: wa, address: $("#s-addr").value.trim(), email: em, gstin: gst, lowStockDefault: low}); D.log(db, "Owner", "Updated store details"); save(); toast("Saved"); }
+  if (act === "save-policies") { Object.keys(db.settings.policies).forEach(k => db.settings.policies[k] = $("#pol-" + k).value); D.log(db, "Owner", "Updated policy drafts"); save(); toast("Drafts saved"); }
+  if (act === "backup") download("label-anant-demo-backup-" + new Date().toISOString().slice(0, 10) + ".json", new Blob([JSON.stringify(db)], {type: "application/json"}));
+  if (act === "new-ticket") modal(`<h2>Log a customer issue</h2><div class="form"><div class="field full"><label for="tc">Customer</label><select id="tc">${db.customers.slice(0, 100).map(c => `<option value="${c.id}">${esc(c.name)} · ${esc(c.city)}</option>`).join("")}</select></div><div class="field full"><label for="ts2">Issue</label><input id="ts2" placeholder="e.g. Asked about dupatta length"></div><p class="ferr full" id="terr"></p></div><div class="df" style="padding:12px 0 0;background:none;border:0"><button class="btn" data-act="mclose">Cancel</button><button class="btn pri" data-act="save-ticket">Save</button></div>`);
+  if (act === "save-ticket") { const s = $("#ts2").value.trim(); if (s.length < 5) { $("#terr").textContent = "Describe the issue."; return; } db.tickets.unshift({id: "T-" + (++db.seq.ticket), customerId: $("#tc").value, orderId: "", subject: s.slice(0, 160), status: "open", createdAt: new Date().toISOString(), messages: [{at: new Date().toISOString(), by: "Owner", text: s}], demo: true}); save(); closeModal(); ticketsView({tab: "tickets"}); }
+});
+document.addEventListener("click", e => { const b = e.target.closest("[data-xlsx],[data-csv]"); if (!b) return; const t = b.dataset.xlsx || b.dataset.csv; exportRows(t, RPT[t], b.dataset.xlsx ? "xlsx" : "csv"); });
+document.addEventListener("submit", e => { if (!["chatf", "loginForm"].includes(e.target.id)) e.preventDefault(); });
+window.addEventListener("storage", e => { if (e.key === D.KEY) { db = D.load(); route(); } });
+route();
+})();
+</script>
+</body>
+</html>
